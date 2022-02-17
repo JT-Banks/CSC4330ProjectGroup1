@@ -5,8 +5,10 @@ const dotenv = require('dotenv')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
+//dotenv gets .env file from root directory
 dotenv.config({ path: './.env' })
 
+//Database connections are held in .env, declaration of variables example: DATABASE_USER = Tom
 const userDB = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -29,10 +31,10 @@ app.set('view engine', 'hbs')
 
 userDB.connect((error) => {
     if (error) {
-        console.log(error)
+        console.log(error) //Provide error if connection was not successful to database
     }
     else
-        console.log("MySQL connected...")
+        console.log("MySQL connected...") //Message to determine successful connection to database
 })
 
 //Define routes

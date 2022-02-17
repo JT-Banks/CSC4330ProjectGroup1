@@ -7,7 +7,7 @@ router.get('/', authController.isLoggedIn, (req, res) => {
         user: req.user
     })
 })
-
+//router requests, passed in controller, if router passes checks, render corrosponding page
 router.get("/register", (req, res) => {
     res.render('register')
 })
