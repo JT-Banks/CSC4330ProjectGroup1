@@ -23,8 +23,8 @@ Steps to run locally:
 Database setup: 
 1. Once Xampp or Mamp is installed, navigate to ``http://localhost/phpmyadmin/index.php``
 2. Click new -> Create database, name it ``login_service``
-3. Create a table with the following SQL, or use the U.I 
-``CREATE TABLE `users`.(
+3. Create a table with the following SQL__
+4. ``CREATE TABLE `users`.(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
