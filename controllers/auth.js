@@ -43,8 +43,8 @@ exports.login = async (req, res) => {
                 }
                 res.cookie('jwt', token, cookieOptions)
 
-                //Redirects user to homepage when logged in, remember to change to homepage for other project
-                res.status(200).redirect("/")
+                //Redirects user to homepage when logged in
+                res.status(200).redirect("/") //root
             }
         })
     }
