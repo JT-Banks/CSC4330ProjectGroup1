@@ -18,14 +18,18 @@ router.get('/login', (req, res) => {
 })
 
 router.get('/profile', authController.isLoggedIn, (req, res) => {
-    if(req.user) {
-        res.render('profile', { 
+    if (req.user) {
+        res.render('profile', {
             user: req.user
         })
     }
     else {
         res.redirect('/login')
     }
+})
+
+router.get('/product', (req, res) => {
+    res.render('product')
 })
 
 module.exports = router

@@ -2,6 +2,7 @@ const mysql = require("mysql")
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { promisify } = require('util')
+const async = require("hbs/lib/async")
 
 //Database connections are held in .env, declaration of variables example: DATABASE_USER = Tom
 const userDB = mysql.createConnection({
@@ -52,6 +53,11 @@ exports.login = async (req, res) => {
     catch (error) {
         console.log(error)
     }
+}
+
+//Testing logic to retrieve minimal data from DB for an item for sale
+exports.product = async (req, res) => {
+    req.message = "Inside product logic"
 }
 
 exports.register = (req, res) => {

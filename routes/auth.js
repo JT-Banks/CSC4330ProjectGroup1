@@ -9,4 +9,6 @@ router.post('/login', authController.login) //login page
 
 router.get('/logout', authController.logout) //logout page
 
+router.post('/product', authController.product) //product page
+
 module.exports = router 
