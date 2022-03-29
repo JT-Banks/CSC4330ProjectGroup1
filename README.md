@@ -1,11 +1,11 @@
 # CSC4330ProjectGroup1
 
-**Simply a placeholder app, that may or may not be used for CSC 4330 [Spring Semester 2022]**
-
-Simple React application to provide the following features:
+React application to provide the following features:
 - Login page
 - Profile page
 - Register page
+- Product page (to be implemented)
+- Shopping cart (to be implemented)
 - Cookies(Session token)
 - Logout functionality
 
