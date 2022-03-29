@@ -30,7 +30,7 @@ CREATE TABLE `users`(\
     `email` VARCHAR(255) NOT NULL,\
     `password` VARCHAR(255) NOT NULL,\
     PRIMARY KEY(`id`)\
-) ENGINE = INNODB;\
+) ENGINE = INNODB;
 
 Tech stack:
 - Xampp (MySQL, and Apache)
