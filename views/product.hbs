@@ -26,11 +26,11 @@
             <div class="col-4">
                 <div class="card">
                     <div class="avatar-ctn">
-                        <img src="/Canoe" class="avatar" alt="Product image">
+                        <img src="/Canoe.jpg" class="avatar" alt="Product image">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">Example text to see card title and format etc.</p>
+                        <p class="card-text">Product price and related info (retrieve from DB)</p>
                         <!--<a href="#" class="btn btn-primary">{{user.email}}</a> -->
                     </div>
                 </div>
@@ -41,11 +41,13 @@
                         Product Page
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Hey {{user.name}}</h5>
-                        <p class="card-text">Product description maybe...</p>
-                        <a href="#" class="btn btn-primary">Under construction - Go somewhere</a>
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">Product description maybe...(need to retrieve description from DB here)</p>
+                        <a href="#" class="btn btn-primary">Simple placeholder link to go somewhere, possibly add to cart?</a>
                     </div>
-                    <div class="card-footer text-muted">Some footer goes here</div>
+                    <div class="card-footer text-muted"><a href="facebook.com">Share on Facebook</a>
+                    <br><a href="">Share via Email</a>                    
+                    </div>
                 </div>
             </div>
         </div>

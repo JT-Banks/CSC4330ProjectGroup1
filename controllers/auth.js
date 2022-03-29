@@ -55,11 +55,6 @@ exports.login = async (req, res) => {
     }
 }
 
-//Testing logic to retrieve minimal data from DB for an item for sale
-exports.product = async (req, res) => {
-    req.message = "Inside product logic"
-}
-
 exports.register = (req, res) => {
     console.log(req.body) //Debug purposes
     const { name, email, password, passwordConfirm } = req.body
