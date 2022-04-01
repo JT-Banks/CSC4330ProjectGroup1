@@ -78,6 +78,12 @@ exports.register = (req, res) => {
                 message: 'Your password and confirm password do not match!'
             })
         }
+        //Attempting to implement logic to check for @columbus.edu email
+        else if(email !== email.includes('@columbus.edu')) {
+            return res.render('register', {
+                message: "You can only register for this site using a columbus.edu email!"
+            })
+        }
 
         let hashedPassword = await bcrypt.hash(password, 8)
         console.log(hashedPassword)
@@ -98,7 +104,7 @@ exports.register = (req, res) => {
 }
 
 exports.isLoggedIn = async (req, res, next) => {
-    req.message = "Inside middleware"
+    //req.message = "Inside middleware"
     //console.log(req.cookies)
     if (req.cookies.jwt) {
         try {
