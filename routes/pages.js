@@ -28,8 +28,15 @@ router.get('/profile', authController.isLoggedIn, (req, res) => {
     }
 })
 
-router.get('/product', (req, res) => {
-    res.render('product')
+router.get('/product', authController.isLoggedIn, (req, res) => {
+    if (req.user) {
+        res.render('product', {
+            user: req.user
+        })
+    }
+    else {
+        res.redirect('/login')
+    }
 })
 
 module.exports = router
