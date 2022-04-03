@@ -67,6 +67,11 @@ exports.register = (req, res) => {
                 message: 'That is email is already in use!'
             })
         }
+        else if (password === '') {
+            return res.render('register', {
+                message: 'Password field cannot be blank!'
+            })
+        }
         else if (password !== passwordConfirm) {
             return res.render('register', {
                 message: 'Your password and confirm password do not match!'
