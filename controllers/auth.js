@@ -44,7 +44,6 @@ exports.login = async (req, res) => {
                     httpOnly: true
                 }
                 res.cookie('jwt', token, cookieOptions)
-
                 //Redirects user to homepage when logged in
                 res.status(200).redirect("/") //root
             }
@@ -74,7 +73,8 @@ exports.register = (req, res) => {
             })
         }
         //Attempting to implement logic to check for @columbus.edu email
-        else if(email !== email.includes('@columbus.edu')) {
+        else if (!email.includes('@columbus.edu')) {
+            console.log("invalid email entered")
             return res.render('register', {
                 message: "You can only register for this site using a columbus.edu email!"
             })
@@ -100,7 +100,7 @@ exports.register = (req, res) => {
 
 exports.isLoggedIn = async (req, res, next) => {
     //req.message = "Inside middleware"
-    //console.log(req.cookies)
+    console.log(req.cookies)
     if (req.cookies.jwt) {
         try {
             //Step 1: Verify Token
