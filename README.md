@@ -19,6 +19,8 @@ Steps to run locally:
 3. Once installation is finished: ``npm start``
 4. In select browser: ``localhost:5005``
 5. .env file configuration: Database info, such as password, host, jwt cookie configs(this is meant to be private, up to you really)
+Here's an example: ![image](https://user-images.githubusercontent.com/48796307/161466329-9d5b3825-1f78-4984-8305-f2c84b0f90b5.png)
+
 
 Database setup: 
 1. Once Xampp or Mamp is installed, navigate to ``http://localhost/phpmyadmin/index.php``
