@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const { promisify } = require('util')
 const async = require("hbs/lib/async")
 
-//Database connections are held in .env, declaration of variables example: DATABASE_USER = Tom
+//Database connections are held in .env, declaration of variables example: DATABASE_USER = root
 const userDB = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
@@ -22,6 +22,11 @@ exports.login = async (req, res) => {
                 message: 'Please provide an email and password'
             })
         }
+        // if (password !== password) {
+        //     return res.status(400).render('login', {
+        //         message: 'Password does not match'
+        //     })
+        // }
 
         userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
             console.log(results) //Provides input from user with hashed password for debugging. Can see ID, name and email. Password is already hashed here if exists
@@ -50,7 +55,7 @@ exports.login = async (req, res) => {
         })
     }
     catch (error) {
-        console.log(error)
+        console.log("This is the error occured in login: " + error)
     }
 }
 
@@ -86,7 +91,9 @@ exports.register = (req, res) => {
         }
 
         let hashedPassword = await bcrypt.hash(password, 8)
+
         console.log(hashedPassword)
+
         userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
             if (error) {
                 console.log(error)
