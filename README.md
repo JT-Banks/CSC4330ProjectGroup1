@@ -6,7 +6,7 @@ React application to provide the following features:
 - Register page
 - Product page (to be implemented)
 - Shopping cart (to be implemented)
-- Cookies(Session token)
+- Cookies (Session token)
 - Logout functionality
 
 Steps to run locally: 
