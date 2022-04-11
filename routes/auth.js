@@ -9,15 +9,6 @@ router.post('/login', authController.login) //login page
 
 router.get('/logout', authController.logout) //logout page
 
-/* 
-TODO: Implement logic to retrieve item details such as 
-{
-    name,
-    price,
-    description,
-    category,..
-}    
-*/
 //router.post('/product', authController.product) //product page
 
 module.exports = router 
