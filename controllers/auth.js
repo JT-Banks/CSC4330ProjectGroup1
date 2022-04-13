@@ -8,7 +8,7 @@ const async = require("hbs/lib/async")
 const userDB = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
-    pw: process.env.DATABASE_PASSWORD,
+    password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 })
 
@@ -23,7 +23,8 @@ exports.login = async (req, res) => {
             })
         }
         userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
-            console.log("This is the resulting object coming in via query to DB: \n" + results) //Provides input from user with hashed password for debugging. Can see ID, name and email. Password is already hashed here if exists
+            //Provides input from user with hashed password for debugging. Can see ID, name and email. Password is already hashed here if exists
+            console.log("This is the resulting object coming in via query to DB: \n" + results)
             if (!results || !(await bcrypt.compare(password, results[0].password))) {
                 res.status(401).render('login', {
                     message: 'Email or password is incorrect' //careful not to tell user which is incorrect
@@ -31,9 +32,9 @@ exports.login = async (req, res) => {
             }
             //TODO: Fix login feature to properly work. Currently with DB changes, login feature is not working. :(
             else {
-                //const id = results[0].user_id //Grab first result
-                console.log("This is the id: -- " + id + "--")
-                const token = jwt.sign({ id: results[0].user_id }, process.env.JWT_SECRET, {
+                const id = results[0].user_id //Grab first result
+                console.log("This is the id: " + id + " and this is the password: " + results[0].password)
+                const token = jwt.sign({ id }, process.env.JWT_SECRET, {
                     expiresIn: process.env.JWT_EXPIRES_IN
                 })
                 console.log("This is the token: " + token) //Needed currently to verify secrets are generating correctly
@@ -90,8 +91,7 @@ exports.register = (req, res) => {
 
         console.log(hashedPassword)
 
-        userDB.query('INSERT INTO users SET ? ', { name: name, email: email, pw: hashedPassword }, (error, results) => {
-            console.log("This is object inserted into DB: " + results)
+        userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
             if (error) {
                 console.log(error)
             }
@@ -127,14 +127,14 @@ exports.isLoggedIn = async (req, res, next) => {
                 return next()
             })
             //Step 3: Retrieve products, [basic logic to query products table, needs further work]
-            userDB.query('SELECT * FROM products', (error, result) => {
-                console.log(result)
-                if (!result) {
-                    return next()
-                }
-                req.products = result[product.id].product_name
-                return next()
-            })
+            //     userDB.query('SELECT * FROM products', (error, result) => {
+            //         console.log(result)
+            //         if (!result) {
+            //             return next()
+            //         }
+            //         req.products = result[product.id].product_name
+            //         return next()
+            //     })
         }
         catch (error) {
             console.log(error)
@@ -149,9 +149,4 @@ exports.logout = async (req, res) => {
         httpOnly: true
     })
     res.status(200).redirect('/')
-}
-
-exports.getUser = (req, res) => {
-    console.log(req.user)
-    res.status(200).json(req.user)
 }
