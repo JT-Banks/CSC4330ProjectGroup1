@@ -1,15 +1,22 @@
-const mysql = require("mysql")
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
-const { promisify } = require('util')
-const async = require("hbs/lib/async")
+const mysql = require("mysql")//import mysql
+const jwt = require('jsonwebtoken') //Used to create, sign, and verify tokens
+const bcrypt = require('bcryptjs') //Used for hashing passwords
+const { promisify } = require('util') //Allows for async/await to work with promises
+const async = require("hbs/lib/async") //hbs async helper
 
 //Database connections are held in .env, declaration of variables example: DATABASE_USER = root
 const userDB = mysql.createConnection({
+<<<<<<< HEAD
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
+=======
+    host: process.env.DATABASE_HOST, 
+    user: process.env.DATABASE_USER, 
+    password: process.env.DATABASE_PASSWORD, 
+    database: process.env.DATABASE 
+>>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
 })
 
 exports.login = async (req, res) => {
@@ -32,8 +39,13 @@ exports.login = async (req, res) => {
             }
             //TODO: Fix login feature to properly work. Currently with DB changes, login feature is not working. :(
             else {
+<<<<<<< HEAD
                 const id = results[0].user_id //Grab first result
                 console.log("This is the id: " + id + " and this is the password: " + results[0].password)
+=======
+                const id = results[0].id //Grab first result
+                console.log("This is the id: -- " + id + "--")
+>>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
                 const token = jwt.sign({ id }, process.env.JWT_SECRET, {
                     expiresIn: process.env.JWT_EXPIRES_IN
                 })
@@ -85,13 +97,17 @@ exports.register = (req, res) => {
             return res.render('register', {
                 message: "You can only register for this site using a columbus.edu email!"
             })
-        }
+        }      
 
-        let hashedPassword = await bcrypt.hash(password, 8)
-
+        let hashedPassword = await bcrypt.hash(password, 8) //hashing password
+        
         console.log(hashedPassword)
 
         userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
+<<<<<<< HEAD
+=======
+            console.log("This is object inserted into DB: " + results)
+>>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
             if (error) {
                 console.log(error)
             }
@@ -118,7 +134,7 @@ exports.isLoggedIn = async (req, res, next) => {
             console.log(decoded)
 
             //Step 2: Check if user still exists
-            userDB.query('SELECT * FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
+            userDB.query('SELECT * FROM users WHERE id = ?', [decoded.id], (error, result) => {
                 console.log(result)
                 if (!result) {
                     return next()
@@ -127,6 +143,7 @@ exports.isLoggedIn = async (req, res, next) => {
                 return next()
             })
             //Step 3: Retrieve products, [basic logic to query products table, needs further work]
+<<<<<<< HEAD
             //     userDB.query('SELECT * FROM products', (error, result) => {
             //         console.log(result)
             //         if (!result) {
@@ -135,6 +152,16 @@ exports.isLoggedIn = async (req, res, next) => {
             //         req.products = result[product.id].product_name
             //         return next()
             //     })
+=======
+            // userDB.query('SELECT * FROM products', (error, result) => {
+            //     console.log(result)
+            //     if (!result) {
+            //         return next()
+            //     }
+            //     req.products = result[product.id].product_name
+            //     return next()
+            // })
+>>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
         }
         catch (error) {
             console.log(error)
@@ -150,3 +177,7 @@ exports.logout = async (req, res) => {
     })
     res.status(200).redirect('/')
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
