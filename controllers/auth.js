@@ -12,10 +12,10 @@ const userDB = mysql.createConnection({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 =======
-    host: process.env.DATABASE_HOST, 
-    user: process.env.DATABASE_USER, 
-    password: process.env.DATABASE_PASSWORD, 
-    database: process.env.DATABASE 
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE
 >>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
 })
 
@@ -97,10 +97,10 @@ exports.register = (req, res) => {
             return res.render('register', {
                 message: "You can only register for this site using a columbus.edu email!"
             })
-        }      
+        }
 
         let hashedPassword = await bcrypt.hash(password, 8) //hashing password
-        
+
         console.log(hashedPassword)
 
         userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
@@ -143,7 +143,6 @@ exports.isLoggedIn = async (req, res, next) => {
                 return next()
             })
             //Step 3: Retrieve products, [basic logic to query products table, needs further work]
-<<<<<<< HEAD
             //     userDB.query('SELECT * FROM products', (error, result) => {
             //         console.log(result)
             //         if (!result) {
@@ -152,16 +151,6 @@ exports.isLoggedIn = async (req, res, next) => {
             //         req.products = result[product.id].product_name
             //         return next()
             //     })
-=======
-            // userDB.query('SELECT * FROM products', (error, result) => {
-            //     console.log(result)
-            //     if (!result) {
-            //         return next()
-            //     }
-            //     req.products = result[product.id].product_name
-            //     return next()
-            // })
->>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
         }
         catch (error) {
             console.log(error)
@@ -177,7 +166,3 @@ exports.logout = async (req, res) => {
     })
     res.status(200).redirect('/')
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
