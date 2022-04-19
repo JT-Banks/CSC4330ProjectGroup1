@@ -24,12 +24,11 @@
             <div class="col-4">
                 <div class="card">
                     <div class="avatar-ctn">
-                        <img src="/Canoe.jpg" class="avatar" alt="Product image">
+                        <img src="/backpack.jpg" class="avatar" alt="Product Image" title="Backpack">
                     </div>
-                    <div class="card-body">
+                    <div class="card-summary">
                         <h5 class="card-title">{{product.name}}</h5>                       
-                        <p class="card-text">Product price and related info (retrieve from DB)</p>
-                        <!--<a href="#" class="btn btn-primary">{{user.email}}</a> -->
+                        <p class="card-text">Product price and related info sample card text</p> 
                     </div>
                 </div>
             </div>
@@ -39,17 +38,23 @@
                         Product Page
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">Product description: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque 
-                            penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
-                             {{product.description}}</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a> &nbsp;
+                        <h5 class="card-title">{{products.name}}</h5>
+                        <p class="card-text" align="center">Product description: <br>This backpack has traveled the world with me, and by the power of the divine,
+                        it has remained like new. As you can see, this backpack is in mint condition. 
+                        This backpack is made of 100% recycled plastic, and it can hold up to 25 lbs.
+                            {{products.description}}</p>
+                            Price:
+                            <p class="card-price" style="color:green">$50.00 {{product.price}}</p>
+                        <a href="#" class="btn btn-primary">Add to cart</a> &nbsp; &nbsp; &nbsp;
                         <a href="#" class="btn btn-primary">Add to wishlist</a>
-                    </div>                
-                    <div class="card-footer text-muted"><a href="https://www.facebook.com/">
-                    <img src="https://findicons.com/files/icons/2052/social_network/32/facebook.png" title="Share on Facebook"></a> &nbsp;
+                    </div>         
+                           
+                    <div class="card-footer"><a href="https://www.facebook.com/">
+                    <img src="https://findicons.com/files/icons/2052/social_network/32/facebook.png" title="Share on Facebook"></a> &nbsp; &nbsp;  &nbsp; &nbsp;
                     <a href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site http://www.website.com." title="Share by Email">
-                    <img src="https://findicons.com/files/icons/2015/24x24_free_application/24/mail.png"></a>                    
+                    <img src="https://findicons.com/files/icons/2015/24x24_free_application/24/mail.png"></a> &nbsp; &nbsp; &nbsp; &nbsp;
+                    <img src="https://findicons.com/files/icons/2052/social_network/32/twitter.png" title="Share on Twitter" title = "share on pinterest"></a> &nbsp; &nbsp; &nbsp; &nbsp;  
+                    <img src="https://findicons.com/files/icons/2843/20_free_flat_shadow_style_original_colour_icons/32/social_media_icons_flat_shadow_set_32x32_0001_pinterest.png" title="Share on Pinterest"></a>                 
                     </div>
                 </div>
             </div>

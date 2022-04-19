@@ -6,17 +6,10 @@ const async = require("hbs/lib/async") //hbs async helper
 
 //Database connections are held in .env, declaration of variables example: DATABASE_USER = root
 const userDB = mysql.createConnection({
-<<<<<<< HEAD
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
-=======
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
->>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
 })
 
 exports.login = async (req, res) => {
@@ -31,7 +24,6 @@ exports.login = async (req, res) => {
         }
         userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
             //Provides input from user with hashed password for debugging. Can see ID, name and email. Password is already hashed here if exists
-            console.log("This is the resulting object coming in via query to DB: \n" + results)
             if (!results || !(await bcrypt.compare(password, results[0].password))) {
                 res.status(401).render('login', {
                     message: 'Email or password is incorrect' //careful not to tell user which is incorrect
@@ -39,18 +31,11 @@ exports.login = async (req, res) => {
             }
             //TODO: Fix login feature to properly work. Currently with DB changes, login feature is not working. :(
             else {
-<<<<<<< HEAD
                 const id = results[0].user_id //Grab first result
-                console.log("This is the id: " + id + " and this is the password: " + results[0].password)
-=======
-                const id = results[0].id //Grab first result
-                console.log("This is the id: -- " + id + "--")
->>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
+                console.log("This is the first result: " + id)
                 const token = jwt.sign({ id }, process.env.JWT_SECRET, {
                     expiresIn: process.env.JWT_EXPIRES_IN
                 })
-                console.log("This is the token: " + token) //Needed currently to verify secrets are generating correctly
-
                 const cookieOptions = {
                     expires: new Date(
                         Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000 //convert to miliseconds, cookie expires in 4 hours
@@ -104,10 +89,6 @@ exports.register = (req, res) => {
         console.log(hashedPassword)
 
         userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
-<<<<<<< HEAD
-=======
-            console.log("This is object inserted into DB: " + results)
->>>>>>> bd5bb6d3c199a7e334a95866535c97b6f345f7b2
             if (error) {
                 console.log(error)
             }
@@ -124,17 +105,16 @@ exports.register = (req, res) => {
 }
 
 exports.isLoggedIn = async (req, res, next) => {
-    req.message = "Inside middleware"
+    //req.message = "Inside middleware"
     console.log(req.cookies)
     if (req.cookies.jwt) {
         try {
             //Step 1: Verify Token
             const decoded = await promisify(jwt.verify)
                 (req.cookies.jwt, process.env.JWT_SECRET)
-            console.log(decoded)
 
             //Step 2: Check if user still exists
-            userDB.query('SELECT * FROM users WHERE id = ?', [decoded.id], (error, result) => {
+            userDB.query('SELECT * FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
                 console.log(result)
                 if (!result) {
                     return next()
@@ -143,20 +123,33 @@ exports.isLoggedIn = async (req, res, next) => {
                 return next()
             })
             //Step 3: Retrieve products, [basic logic to query products table, needs further work]
-            //     userDB.query('SELECT * FROM products', (error, result) => {
-            //         console.log(result)
-            //         if (!result) {
-            //             return next()
-            //         }
-            //         req.products = result[product.id].product_name
-            //         return next()
-            //     })
         }
         catch (error) {
             console.log(error)
             return next()
         }
     } else { next() }
+}
+
+exports.products = (req, res) => {
+    const product_id = req.params.product_id
+    try {
+        userDB.query('SELECT * FROM products where product_id = ?', [product_id], (error, results) => {
+            if (!result) {
+                console.log(error)
+                return next()
+            }
+            else {
+                console.log(results)
+                res.render('products', {
+                    products: results
+                })
+            }
+        })
+    }
+    catch (error) {
+        console.log(error)
+    }
 }
 
 exports.logout = async (req, res) => {
