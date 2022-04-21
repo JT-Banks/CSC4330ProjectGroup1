@@ -13,10 +13,12 @@
 
 <body>
     <nav>
-        <h4>Profile</h4>
+        <h4>Profile Page</h4>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/product">Products</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/auth/logout">Logout</a></li>
         </ul>
     </nav>
@@ -30,22 +32,30 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{user.name}}</h5>
-                        <p class="card-text">Example text to see card title and format etc.</p>
-                        <a href="#" class="btn btn-primary">{{user.email}}</a>
+                        <p class="card-text">User Info: </p>
+                        Email: <p style="color:blue">{{user.email}}</p>
+                        Phone: (555) 550-5555{{user.phone}}<br>
+                        Address: {{user.address}}<br>
+                        City: {{user.city}}<br>
+                        State: {{user.state}}<br>
+                        Zip: {{user.zip}}<br>
+                        Country: {{user.country}}  
                     </div>
                 </div>
             </div>
             <div class="col-8">
                 <div class="card text-center">
                     <div class="card-header">
-                        Profile Page
+                    Summary
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Hey {{user.name}}</h5>
                         <p class="card-text">This is a placeholder for more specific information later</p>
-                        <a href="#" class="btn btn-primary">Btn to go somewhere</a>
+                        <a href="#" class="btn btn-primary">Remove item</a>
                     </div>
-                    <div class="card-footer text-muted">Some footer goes here</div>
+                    <div class="profile-card-footer">
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                    </div>
                 </div>
             </div>
         </div>

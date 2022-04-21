@@ -11,12 +11,11 @@
 </head>
 <body>
     <nav>
-        <h4>Product page</h4>
+        <h4>Wishlist page</h4>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/profile">Profile</a></li>
             <li><a href="/Cart">Cart</a></li>
-            <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/auth/logout">Logout</a></li>
         </ul>
     </nav>
@@ -41,7 +40,7 @@
             <div class="col-8">
                 <div class="card text-center">
                     <div class="card-header">
-                    Product Page
+                    Wishlist
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{products.name}}</h5>

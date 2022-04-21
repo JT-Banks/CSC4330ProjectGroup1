@@ -70,3 +70,22 @@ nav li a:hover {
   display: table-footer-group;
   justify-content: space-evenly;
 }
+
+.profile-card-footer {
+  background-color: rgb(255, 255, 255);
+  color: rgb(5, 5, 5);
+  padding: 10px 35px;
+  display: table-footer-group;
+  justify-content: space-evenly;
+}
+
+.card-text {
+  color: rgb(5, 5, 5);
+  font-size: 14px;
+  font-weight: bold;
+}
+.card-body {
+  color: rgb(38, 6, 136);
+  font-size: 18px;
+  font-weight: italic;
+}
