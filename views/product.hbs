@@ -11,16 +11,15 @@
 </head>
 <body>
     <nav>
-        <h4>Product page</h4>
+        <h4>Product Page</h4>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/profile">Profile</a></li>
-            <li><a href="/Cart">Cart</a></li>
+            <li><a href="/cart">Cart</a></li>
             <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/auth/logout">Logout</a></li>
         </ul>
     </nav>
-
     <div class="container mt-4">
         <div class="row">
             <div class="col-4">
@@ -41,18 +40,16 @@
             <div class="col-8">
                 <div class="card text-center">
                     <div class="card-header">
-                    Product Page
+                    Products
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{products.name}}</h5>
                         <p class="card-text-desc" align="center">Product description<br>This backpack has traveled the world with me, and by the power of the divine,
                         it has remained like new. As you can see, this backpack is in mint condition. 
                         This backpack is made of 100% recycled plastic, and it can hold up to 25 lbs.
-                            {{products.description}}</p>
-                            Price:
-                            <p class="card-price" style="color:green">$50.00 {{product.price}}</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a> &nbsp; &nbsp; &nbsp;
-                        <a href="#" class="btn btn-primary">Add to wishlist</a>
+                        {{products.description}}</p>    
+                        <a href="/cart/add/{{products.id}}" class="btn btn-primary">Add to Cart</a> &nbsp; &nbsp; &nbsp;
+                        <a href="/wishlist/add/{{products.id}}" class="btn btn-primary">Add to Wishlist</a>&nbsp; &nbsp; &nbsp;
                     </div>         
                            
                     <div class="card-footer"><a href="https://www.facebook.com/">

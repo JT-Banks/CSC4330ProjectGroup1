@@ -11,16 +11,14 @@
 </head>
 <body>
     <nav>
-        <h4>Product page</h4>
+        <h4>Cart Page</h4>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/profile">Profile</a></li>
-            <li><a href="/Cart">Cart</a></li>
             <li><a href="/wishlist">Wishlist</a></li>
             <li><a href="/auth/logout">Logout</a></li>
         </ul>
     </nav>
-
     <div class="container mt-4">
         <div class="row">
             <div class="col-4">
@@ -30,27 +28,28 @@
                     </div>
                     <div class="card-summary">
                         <h5 class="card-title">{{product.name}}</h5>                       
-                        <p class="card-text">Product price and related info sample card text</p> 
+                        <p class="card-text">Seller Rating: ⭐⭐⭐⭐ <br>
+                        Price: $50.00{{product.price}}<br>
+                        Quantity: 1{{product.quantity}}<br>
+                        Category: Outdoors{{product.category}}<br>
+                        Seller: {{user.name}} </p>
                     </div>
                 </div>
             </div>
             <div class="col-8">
                 <div class="card text-center">
                     <div class="card-header">
-                        Product Page
+                    Cart
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{products.name}}</h5>
-                        <p class="card-text" align="center">Product description: <br>This backpack has traveled the world with me, and by the power of the divine,
+                        <p class="card-text-desc" align="center">Product description<br>This backpack has traveled the world with me, and by the power of the divine,
                         it has remained like new. As you can see, this backpack is in mint condition. 
                         This backpack is made of 100% recycled plastic, and it can hold up to 25 lbs.
-                            {{products.description}}</p>
-                            Price:
-                            <p class="card-price" style="color:green">$50.00 {{product.price}}</p>
-                        <a href="#" class="btn btn-primary">Add to cart</a> &nbsp; &nbsp; &nbsp;
-                        <a href="#" class="btn btn-primary">Add to wishlist</a>
-                    </div>         
-                           
+                        {{products.description}}</p>
+                        <a href="#" class="btn btn-primary">Add to wishlist</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                        <a href="#" class="btn btn-danger">Remove from cart</a>
+                    </div>                                
                     <div class="card-footer"><a href="https://www.facebook.com/">
                     <img src="https://findicons.com/files/icons/2052/social_network/32/facebook.png" title="Share on Facebook"></a> &nbsp; &nbsp;  &nbsp; &nbsp;
                     <a href="mailto:?subject=I wanted you to see this site&amp;body=Check out this site http://www.website.com." title="Share by Email">
@@ -67,5 +66,4 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

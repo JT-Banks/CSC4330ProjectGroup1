@@ -39,4 +39,26 @@ router.get('/product', authController.isLoggedIn, (req, res) => {
     }
 })
 
+router.get('/cart', authController.isLoggedIn, (req, res) => {
+    if (req.user) {
+        res.render('cart', {
+            user: req.user
+        })
+    }
+    else {
+        res.redirect('/login')
+    }
+})
+
+router.get('/wishlist', authController.isLoggedIn, (req, res) => {
+    if (req.user) {
+        res.render('wishlist', {
+            user: req.user
+        })
+    }
+    else {
+        res.redirect('/login')
+    }
+})
+
 module.exports = router

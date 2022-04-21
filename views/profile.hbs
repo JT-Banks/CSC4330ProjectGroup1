@@ -29,17 +29,19 @@
                 <div class="card">
                     <div class="avatar-ctn">
                         <img src="/avatar-img.png" class="avatar" alt="User profile picture">
+                        <a href="#" class="btn btn-primary">Edit Profile</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                        <a href="#" class="btn btn-primary">Edit Profile Photo</a>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{user.name}}</h5>
-                        <p class="card-text">User Info: </p>
-                        Email: <p style="color:blue">{{user.email}}</p>
+                        <p class="card-text">
+                        Email: {{user.email}}<br>
                         Phone: (555) 550-5555{{user.phone}}<br>
-                        Address: {{user.address}}<br>
-                        City: {{user.city}}<br>
-                        State: {{user.state}}<br>
-                        Zip: {{user.zip}}<br>
-                        Country: {{user.country}}  
+                        Address: 5757 River Birch Dr.{{user.address}}<br>
+                        City: Riverland{{user.city}}<br>
+                        State: Riverstate{{user.state}}<br>
+                        Zip: 70899{{user.zip}}<br>
+                        Country: River Earth 6{{user.country}}</p>
                     </div>
                 </div>
             </div>
@@ -49,12 +51,15 @@
                     Summary
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Hey {{user.name}}</h5>
-                        <p class="card-text">This is a placeholder for more specific information later</p>
-                        <a href="#" class="btn btn-primary">Remove item</a>
+                        <h5 class="card-title">Hey {{user.name}}!</h5>
+                        <p class="card-text">Bio:<br> I have a cat, whom I feed pickles to vigoursly, and endlessly. <br>I enjoy this website as much as I enjoy scotch.
+                        I have a robotic arm chair that I got from a store, and I love it. <br>Once I went outside, confronted by a grown bear, I took it to the store and bought a new one.
+                        </p>
                     </div>
                     <div class="profile-card-footer">
-                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                        <a href="#" class="btn btn-primary">Change Password</a><br><br>
+                        <a href="#" class="btn btn-danger">Delete Account</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                        <a href="#" class="btn btn-danger">Remove Item</a>
                     </div>
                 </div>
             </div>
