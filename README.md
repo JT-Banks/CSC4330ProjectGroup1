@@ -28,7 +28,7 @@ Here's an example: \
 
 Database setup: 
 1. Once Xampp or Mamp is installed, navigate to ``http://localhost/phpmyadmin/index.php``
-2. Click new -> Create database, name it ``login_service``
+2. Click new -> Create database, name it ``columbus_marketplace``
 3. Create database, then load the provided script in Database folder
 
 Tech stack:
