@@ -134,7 +134,7 @@ exports.isLoggedIn = async (req, res, next) => {
 exports.products = (req, res) => {
     const product_id = req.params.product_id
     try {
-        userDB.query('SELECT * FROM products where product_id = ?', [product_id], (error, results) => {
+        userDB.query('SELECT * FROM products where product_id = ?', [product_id], (error, result) => {
             if (!result) {
                 console.log(error)
                 return next()
@@ -142,7 +142,7 @@ exports.products = (req, res) => {
             else {
                 console.log(results)
                 res.render('products', {
-                    products: results
+                    data: result
                 })
             }
         })

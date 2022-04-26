@@ -34,7 +34,7 @@ userDB.connect((error) => {
         console.log(error) //Provide error if connection was not successful to database
     }
     else
-        console.log("MySQL connecting ....>> OK") //Message to determine successful connection to database
+        console.log("MySQL connecting .... OK") //Message to determine successful connection to database
 })
 
 //Define routes
@@ -42,5 +42,5 @@ app.use('/', require('./routes/pages'))
 app.use('/auth', require('./routes/auth'))
 
 app.listen(5005, () => {
-    console.log("Server started on localhost port 5005 ....>> OK")
+    console.log("Server started on localhost port 5005 .... OK")
 })

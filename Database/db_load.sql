@@ -36,6 +36,7 @@ CREATE TABLE Products(
 	store_quantity INT UNSIGNED NOT NULL,
 	category INT UNSIGNED NOT NULL, 
 	price DECIMAL(6, 2) UNSIGNED,
+    rating INT UNSIGNED,
     image_url varchar(255),
 	PRIMARY KEY(`product_id`)
 )
