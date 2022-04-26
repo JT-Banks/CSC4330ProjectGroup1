@@ -2,7 +2,7 @@ CREATE TABLE Users(
 	user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name varchar(255),
 	email varchar(255),
-	pw varchar(255),
+	password varchar(255),
 	PRIMARY KEY(`user_id`)
 );
 
@@ -29,14 +29,6 @@ CREATE TABLE Payment(
     PRIMARY KEY(`payment_id`)
 );
 
-CREATE TABLE Discount(
-    discount_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    name varchar(255),
-    description text,
-    percent DECIMAL(5, 2) UNSIGNED, -- 5 total places, 100.00% for example
-    PRIMARY KEY(`discount_id`)
-);
-
 CREATE TABLE Products(
 	product_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name varchar(255),
@@ -44,8 +36,7 @@ CREATE TABLE Products(
 	store_quantity INT UNSIGNED NOT NULL,
 	category INT UNSIGNED NOT NULL, 
 	price DECIMAL(6, 2) UNSIGNED,
-	discount_id INT UNSIGNED NULL,
-	FOREIGN KEY(discount_id) REFERENCES Discount(discount_id),
+    image_url varchar(255),
 	PRIMARY KEY(`product_id`)
 )
 
@@ -68,10 +59,11 @@ CREATE TABLE Order_items(
 );
 
 CREATE TABLE Price(
-    product_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    price_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    product_id INT UNSIGNED NOT NULL,
     original_price DECIMAL(12, 2) UNSIGNED,
     discount_id INT UNSIGNED,
     discounted_price DECIMAL(12, 2) UNSIGNED,
-    FOREIGN KEY(discount_id) REFERENCES Discount(discount_id),
-    PRIMARY KEY(`product_id`)
+    FOREIGN KEY(product_id) REFERENCES Products(product_id),
+    PRIMARY KEY(`price_id`)
 );
