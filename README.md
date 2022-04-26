@@ -29,14 +29,7 @@ Here's an example: \
 Database setup: 
 1. Once Xampp or Mamp is installed, navigate to ``http://localhost/phpmyadmin/index.php``
 2. Click new -> Create database, name it ``login_service``
-3. Create a table with the following SQL\
-CREATE TABLE `users`(\
-    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,\
-    `name` VARCHAR(255) NOT NULL,\
-    `email` VARCHAR(255) NOT NULL,\
-    `password` VARCHAR(255) NOT NULL,\
-    PRIMARY KEY(`id`)\
-) ENGINE = INNODB;
+3. Create database, then load the provided script in Database folder
 
 Tech stack:
 - Xampp (MySQL, and Apache)
