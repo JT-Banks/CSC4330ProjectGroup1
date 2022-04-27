@@ -19,9 +19,10 @@ Example of Xampp on Windows: \
 
 1. Clone Repo
 2. In a terminal, in the parent directory of the application: ``npm install``
-3. Once installation is finished: ``npm start``
-4. In select browser: ``localhost:5005``
-5. .env file configuration: Database info, such as password, host, jwt cookie configs(this is meant to be private, up to you really) \
+3. Utilize the script located in the ``Database`` folder, simply copy and paste or load the script and run it to load the database.
+4. Once installation is finished: ``npm start``
+5. In select browser: ``localhost:5005``
+6. .env file configuration: Database info, such as password, host, jwt cookie configs(this is meant to be private, up to you really) \
 Here's an example: \
 ![image](https://user-images.githubusercontent.com/48796307/161466329-9d5b3825-1f78-4984-8305-f2c84b0f90b5.png)
 
