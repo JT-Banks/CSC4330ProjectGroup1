@@ -1,3 +1,5 @@
+CREATE DATABASE Columbus_Marketplace;
+
 CREATE TABLE Users(
 	user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name varchar(255),
@@ -5,7 +7,6 @@ CREATE TABLE Users(
 	password varchar(255),
 	PRIMARY KEY(`user_id`)
 );
-
 
 CREATE TABLE Address(
 	address_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -39,7 +40,7 @@ CREATE TABLE Products(
     rating INT UNSIGNED,
     image_url varchar(255),
 	PRIMARY KEY(`product_id`)
-)
+);
 
 CREATE TABLE Orders(
     order_id INT UNSIGNED NOT NULL AUTO_INCREMENT,

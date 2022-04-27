@@ -131,6 +131,13 @@ exports.isLoggedIn = async (req, res, next) => {
     } else { next() }
 }
 
+/* TODO: Need to implement transformation logic to retrieve products table 
+*  Objects queried from database come in as objects, and need to be iterated over to retrieve actual values
+*  This needs to be transformed via handlebars template.
+*  Example: Query returns an object with a key of products, and a value of an array of objects
+*  This array of objects needs to be iterated over to retrieve the actual values
+*  HBS: {{#each products}} {{this.product_name}} {{/each}}
+*/
 exports.products = (req, res) => {
     const product_id = req.params.product_id
     try {
@@ -140,7 +147,7 @@ exports.products = (req, res) => {
                 return next()
             }
             else {
-                console.log(results)
+                console.log(result)
                 res.render('products', {
                     data: result
                 })

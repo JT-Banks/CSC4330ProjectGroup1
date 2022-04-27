@@ -5,6 +5,8 @@ const dotenv = require('dotenv')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
+var port = 5005;
+
 //dotenv gets .env file from root directory
 dotenv.config({ path: './.env' })
 
@@ -12,7 +14,7 @@ dotenv.config({ path: './.env' })
 const userDB = mysql.createConnection({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD, 
+    password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE
 })
 
@@ -34,13 +36,14 @@ userDB.connect((error) => {
         console.log(error) //Provide error if connection was not successful to database
     }
     else
-        console.log("MySQL connecting .... OK") //Message to determine successful connection to database
+        console.log("MySQL connecting .... OK!") //Message to determine successful connection to database
+        console.log("Server is currently running, check browser @ http://localhost:" + port)
 })
 
 //Define routes
 app.use('/', require('./routes/pages'))
 app.use('/auth', require('./routes/auth'))
 
-app.listen(5005, () => {
-    console.log("Server started on localhost port 5005 .... OK")
+app.listen(port, () => {
+    console.log("Server started on localhost port " + port + " ... OK!")
 })
