@@ -18,7 +18,7 @@ Example of Xampp on Windows: \
 ![image](https://user-images.githubusercontent.com/48796307/161466548-f88cf614-1cd7-4f29-9424-8fce031faf5e.png) 
 
 1. Clone Repo
-2. In terminal in directory of login_service: ``npm install``
+2. In a terminal, in the parent directory of the application: ``npm install``
 3. Once installation is finished: ``npm start``
 4. In select browser: ``localhost:5005``
 5. .env file configuration: Database info, such as password, host, jwt cookie configs(this is meant to be private, up to you really) \
