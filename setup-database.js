@@ -54,13 +54,22 @@ function loadSampleData() {
     // Close the current connection and reconnect to the specific database
     connection.end()
     
-    const dbConnection = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE,
-        multipleStatements: true
-    })
+    // Create new connection using the same logic as before
+    let dbConnection;
+    
+    if (process.env.DATABASE_URL) {
+        // Railway provides DATABASE_URL in format: mysql://user:password@host:port/database
+        dbConnection = mysql.createConnection(process.env.DATABASE_URL)
+    } else {
+        // Fallback to individual environment variables
+        dbConnection = mysql.createConnection({
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER,
+            password: process.env.DATABASE_PASSWORD,
+            database: process.env.DATABASE,
+            multipleStatements: true
+        })
+    }
     
     try {
         const sampleDataPath = path.join(__dirname, 'Database', 'sample_data.sql')
