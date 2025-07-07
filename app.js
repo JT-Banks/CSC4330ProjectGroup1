@@ -5,6 +5,7 @@ const dotenv = require('dotenv')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const fs = require('fs')
 
 var port = process.env.PORT || 5005;
 
@@ -46,7 +47,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 
-userDB.connect((error) => {
+userDB.connect(async (error) => {
     if (error) {
         console.log("❌ Database connection failed:", error.code)
         console.log("Please check your .env file and ensure MySQL is running")
@@ -60,6 +61,34 @@ userDB.connect((error) => {
     else {
         console.log("✅ MySQL connecting .... OK!")
         console.log("📊 Connected to database:", process.env.DATABASE)
+        
+        // Run database setup on Railway (production only)
+        if (process.env.NODE_ENV === 'production') {
+            console.log("🔧 Setting up database tables...")
+            try {
+                const setupScript = fs.readFileSync(path.join(__dirname, 'Database', 'db_load.sql'), 'utf8')
+                const statements = setupScript.split(';').filter(stmt => stmt.trim().length > 0)
+                
+                for (const statement of statements) {
+                    if (statement.trim()) {
+                        await new Promise((resolve, reject) => {
+                            userDB.query(statement, (err, results) => {
+                                if (err) {
+                                    console.log("⚠️  SQL statement warning:", err.message)
+                                    resolve() // Continue even if some statements fail
+                                } else {
+                                    resolve(results)
+                                }
+                            })
+                        })
+                    }
+                }
+                console.log("✅ Database setup completed!")
+            } catch (setupError) {
+                console.log("⚠️  Database setup warning:", setupError.message)
+                console.log("📱 App will continue without setup...")
+            }
+        }
     }
     
     console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)

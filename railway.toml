@@ -5,7 +5,7 @@
   command = "npm install"
 
 [deploy]
-  command = "npm run setup-db && npm start"
+  command = "npm start"
 
 [env]
   NODE_ENV = "production"
