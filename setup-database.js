@@ -4,12 +4,21 @@ const path = require('path')
 require('dotenv').config()
 
 // Create connection without specifying database initially
-const connection = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    multipleStatements: true
-})
+// Support both individual variables and Railway's DATABASE_URL format
+let connection;
+
+if (process.env.DATABASE_URL) {
+    // Railway provides DATABASE_URL in format: mysql://user:password@host:port/database
+    connection = mysql.createConnection(process.env.DATABASE_URL)
+} else {
+    // Fallback to individual environment variables
+    connection = mysql.createConnection({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        multipleStatements: true
+    })
+}
 
 async function initializeDatabase() {
     console.log('🔄 Initializing Columbus Marketplace Database...')
