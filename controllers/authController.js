@@ -3,13 +3,22 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs') 
 const { promisify } = require('util') 
 
-//Database connections are held in .env, declaration of variables example: DATABASE_USER = root
-const userDB = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-})
+//Database connections are held in .env
+// Support both individual variables and Railway's DATABASE_URL format
+let userDB;
+
+if (process.env.DATABASE_URL) {
+    // Railway provides DATABASE_URL in format: mysql://user:password@host:port/database
+    userDB = mysql.createConnection(process.env.DATABASE_URL)
+} else {
+    // Fallback to individual environment variables
+    userDB = mysql.createConnection({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE
+    })
+}
 
 exports.login = async (req, res) => {
     try {
