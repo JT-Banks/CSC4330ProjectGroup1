@@ -1,8 +1,7 @@
-const mysql = require("mysql")//import mysql
-const jwt = require('jsonwebtoken') //Used to create, sign, and verify tokens
-const bcrypt = require('bcryptjs') //Used for hashing passwords
-const { promisify } = require('util') //Allows for async/await to work with promises
-const async = require("hbs/lib/async") //hbs async helper
+const mysql = require("mysql2")
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs') 
+const { promisify } = require('util') 
 
 //Database connections are held in .env, declaration of variables example: DATABASE_USER = root
 const userDB = mysql.createConnection({
@@ -14,121 +13,186 @@ const userDB = mysql.createConnection({
 
 exports.login = async (req, res) => {
     try {
-        const { email, password } = req.body //users login with email & password 
+        const { email, password } = req.body
 
-        //if not false, email is true, !email = true
         if (!email || !password) {
-            return res.status(400).render('login', { //keep rendering login until successful
+            return res.status(400).json({ 
+                success: false,
                 message: 'Please provide an email and password'
             })
         }
+
+        // Validate .edu email requirement
+        if (!email.endsWith('.edu')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Only .edu email addresses are allowed'
+            })
+        }
+
         userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
-            //Provides input from user with hashed password for debugging. Can see ID, name and email. Password is already hashed here if exists
-            if (!results || !(await bcrypt.compare(password, results[0].password))) {
-                res.status(401).render('login', {
-                    message: 'Email or password is incorrect' //careful not to tell user which is incorrect
+            if (error) {
+                console.log(error)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
                 })
             }
-            //TODO: Fix login feature to properly work. Currently with DB changes, login feature is not working. :(
-            else {
-                const id = results[0].user_id //Grab first result
-                console.log("This is the first result: " + id)
-                const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-                    expiresIn: process.env.JWT_EXPIRES_IN
+
+            if (!results || results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Email or password is incorrect'
                 })
-                const cookieOptions = {
-                    expires: new Date(
-                        Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000 //convert to miliseconds, cookie expires in 4 hours
-                    ),
-                    httpOnly: true
+            }
+
+            const user = results[0]
+            const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, {
+                expiresIn: process.env.JWT_EXPIRES_IN
+            })
+
+            const cookieOptions = {
+                expires: new Date(
+                    Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+                ),
+                httpOnly: true
+            }
+
+            res.cookie('jwt', token, cookieOptions)
+            res.status(200).json({
+                success: true,
+                message: 'Login successful',
+                token: token,
+                user: {
+                    id: user.user_id,
+                    name: user.name,
+                    email: user.email
                 }
-                res.cookie('jwt', token, cookieOptions)
-                //Redirects user to homepage when logged in
-                res.status(200).redirect("/") //root
-            }
+            })
         })
     }
     catch (error) {
-        console.log("This is the error occured in login: " + error)
+        console.log("Login error: " + error)
+        res.status(500).json({
+            success: false,
+            message: 'Server error occurred'
+        })
     }
 }
 
 exports.register = (req, res) => {
-    console.log(req.body) //Debug purposes
-    const { name, email, password, passwordConfirm } = req.body
+    console.log(req.body) 
+    const { name, email, password } = req.body
+
+    // Validate .edu email requirement
+    if (!email.endsWith('.edu')) {
+        return res.status(400).json({
+            success: false,
+            message: 'Only .edu email addresses are allowed for student registration'
+        })
+    }
 
     userDB.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
         if (error) {
             console.log(error)
-        }
-        if (result.length > 0) {
-            return res.render('register', {
-                message: 'That is email is already in use!'
+            return res.status(500).json({
+                success: false,
+                message: 'Database error occurred'
             })
         }
-        else if (password === '') {
-            return res.render('register', {
+
+        if (result.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'That email is already in use!'
+            })
+        }
+
+        if (!password || password === '') {
+            return res.status(400).json({
+                success: false,
                 message: 'Password field cannot be blank!'
             })
         }
-        else if (password !== passwordConfirm) {
-            return res.render('register', {
-                message: 'Your password and confirm password do not match!'
-            })
-        }
-        //Attempting to implement logic to check for @columbus.edu email
-        else if (!email.includes('@columbus.edu')) {
-            console.log("Invalid email entered from user: " + email)
-            return res.render('register', {
-                message: "You can only register for this site using a columbus.edu email!"
-            })
-        }
 
-        let hashedPassword = await bcrypt.hash(password, 8) //hashing password
+        try {
+            let hashedPassword = await bcrypt.hash(password, 8)
 
-        console.log(hashedPassword)
+            userDB.query('INSERT INTO users SET ?', { 
+                name: name, 
+                email: email, 
+                password: hashedPassword 
+            }, (error, results) => {
+                if (error) {
+                    console.log(error)
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Failed to create user account'
+                    })
+                }
 
-        userDB.query('INSERT INTO users SET ? ', { name: name, email: email, password: hashedPassword }, (error, results) => {
-            if (error) {
-                console.log(error)
-            }
-            else {
                 console.log(results)
-                return res.render('register', {
-                    message: 'User registered!'
+                return res.status(201).json({
+                    success: true,
+                    message: 'Student account created successfully!'
                 })
-            }
-        })
-
+            })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                success: false,
+                message: 'Error creating account'
+            })
+        }
     })
-
 }
 
 exports.isLoggedIn = async (req, res, next) => {
-    //req.message = "Inside middleware"
-    console.log(req.cookies)
-    if (req.cookies.jwt) {
-        try {
-            //Step 1: Verify Token
-            const decoded = await promisify(jwt.verify)
-                (req.cookies.jwt, process.env.JWT_SECRET)
+    console.log('Checking authentication...')
+    console.log('Cookies:', req.cookies)
+    console.log('Headers:', req.headers.authorization)
 
-            //Step 2: Check if user still exists
-            userDB.query('SELECT * FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
-                console.log(result)
-                if (!result) {
-                    return next()
-                }
-                req.user = result[0]
+    try {
+        let token = null
+
+        // Check for token in Authorization header first
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.split(' ')[1]
+        }
+        // Fall back to cookie
+        else if (req.cookies.jwt) {
+            token = req.cookies.jwt
+        }
+
+        if (!token) {
+            return next() // No token, continue without user
+        }
+
+        // Verify token
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+        // Check if user still exists
+        userDB.query('SELECT user_id, name, email FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
+            if (error) {
+                console.log('Database error:', error)
                 return next()
-            })
-            //Step 3: Retrieve products, [basic logic to query products table, needs further work]
-        }
-        catch (error) {
-            console.log(error)
+            }
+
+            if (!result || result.length === 0) {
+                return next() // User doesn't exist, continue without user
+            }
+
+            req.user = {
+                id: result[0].user_id,
+                name: result[0].name,
+                email: result[0].email
+            }
             return next()
-        }
-    } else { next() }
+        })
+    } catch (error) {
+        console.log('Auth middleware error:', error)
+        return next() // Invalid token, continue without user
+    }
 }
 
 /* TODO: Need to implement transformation logic to retrieve products table 
@@ -139,23 +203,36 @@ exports.isLoggedIn = async (req, res, next) => {
 *  HBS: {{#each products}} {{this.product_name}} {{/each}}
 */
 exports.products = (req, res) => {
-    const product_id = req.params.product_id
+    const product_id = req.params.id
     try {
-        userDB.query('SELECT * FROM products where product_id = ?', [product_id], (error, result) => {
-            if (!result) {
+        userDB.query('SELECT * FROM products WHERE product_id = ?', [product_id], (error, result) => {
+            if (error) {
                 console.log(error)
-                return next()
-            }
-            else {
-                console.log(result)
-                res.render('products', {
-                    data: result
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
                 })
             }
+            
+            if (!result || result.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Product not found'
+                })
+            }
+
+            res.status(200).json({
+                success: true,
+                data: result[0]
+            })
         })
     }
     catch (error) {
         console.log(error)
+        res.status(500).json({
+            success: false,
+            message: 'Server error occurred'
+        })
     }
 }
 
@@ -164,5 +241,56 @@ exports.logout = async (req, res) => {
         expires: new Date(Date.now() + 2 * 1000),
         httpOnly: true
     })
-    res.status(200).redirect('/')
+    res.status(200).json({
+        success: true,
+        message: 'Logged out successfully'
+    })
+}
+
+// Add token verification endpoint
+exports.verify = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1] || req.cookies.jwt
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'No token provided'
+            })
+        }
+
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+        userDB.query('SELECT user_id, name, email FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
+            if (error) {
+                console.log(error)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
+                })
+            }
+
+            if (!result || result.length === 0) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid token'
+                })
+            }
+
+            res.status(200).json({
+                success: true,
+                user: {
+                    id: result[0].user_id,
+                    name: result[0].name,
+                    email: result[0].email
+                }
+            })
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(401).json({
+            success: false,
+            message: 'Invalid token'
+        })
+    }
 }

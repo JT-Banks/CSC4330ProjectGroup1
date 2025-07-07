@@ -2,63 +2,60 @@ const express = require('express')
 const authController = require('../controllers/authController')
 const router = express.Router()
 
-router.get('/', authController.isLoggedIn, (req, res) => {
-    res.render('index', {
+// API endpoints for data
+router.get('/products', authController.isLoggedIn, (req, res) => {
+    // Return products data as JSON
+    res.json({
+        success: true,
+        message: 'Products endpoint - to be implemented',
+        user: req.user || null
+    })
+})
+
+router.get('/user/profile', authController.isLoggedIn, (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            message: 'Unauthorized'
+        })
+    }
+
+    res.json({
+        success: true,
         user: req.user
     })
 })
-//router requests, passed in controller, if router passes checks, render corrosponding page
-router.get("/register", (req, res) => {
-    res.render('register')
-})
 
-router.get('/login', (req, res) => {
-    res.render('login')
-
-})
-
-router.get('/profile', authController.isLoggedIn, (req, res) => {
-    if (req.user) {
-        res.render('profile', {
-            user: req.user
+router.get('/user/cart', authController.isLoggedIn, (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            message: 'Unauthorized'
         })
     }
-    else {
-        res.redirect('/login')
-    }
+
+    // Return cart data - to be implemented with database
+    res.json({
+        success: true,
+        cart: [],
+        user: req.user
+    })
 })
 
-router.get('/product', authController.isLoggedIn, (req, res) => {
-    if (req.user) {
-        res.render('product', {
-            user: req.user
+router.get('/user/wishlist', authController.isLoggedIn, (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({
+            success: false,
+            message: 'Unauthorized'
         })
     }
-    else {
-        res.redirect('/login')
-    }
-})
 
-router.get('/cart', authController.isLoggedIn, (req, res) => {
-    if (req.user) {
-        res.render('cart', {
-            user: req.user
-        })
-    }
-    else {
-        res.redirect('/login')
-    }
-})
-
-router.get('/wishlist', authController.isLoggedIn, (req, res) => {
-    if (req.user) {
-        res.render('wishlist', {
-            user: req.user
-        })
-    }
-    else {
-        res.redirect('/login')
-    }
+    // Return wishlist data - to be implemented with database
+    res.json({
+        success: true,
+        wishlist: [],
+        user: req.user
+    })
 })
 
 module.exports = router
