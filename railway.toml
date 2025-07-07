@@ -1,8 +1,8 @@
 # Railway Deployment Configuration
-# This file tells Railway how to deploy your app
+# This file tells Railway how to deploy your backend API
 
 [build]
-  command = "npm install && npm run setup-db"
+  command = "npm install"
 
 [deploy]
   command = "npm start"
