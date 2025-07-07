@@ -1,7 +1,9 @@
-CREATE DATABASE IF NOT EXISTS Columbus_Marketplace;
-USE Columbus_Marketplace;
+-- Use existing Railway database (don't create new one)
+-- CREATE DATABASE IF NOT EXISTS Columbus_Marketplace;
+-- USE Columbus_Marketplace;
 
-CREATE TABLE Users(
+-- Create tables in the current database (Railway's 'railway' database)
+CREATE TABLE IF NOT EXISTS Users(
 	user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name varchar(255),
 	email varchar(255),
@@ -9,7 +11,7 @@ CREATE TABLE Users(
 	PRIMARY KEY(`user_id`)
 );
 
-CREATE TABLE Address(
+CREATE TABLE IF NOT EXISTS Address(
 	address_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	user_id INT UNSIGNED NOT NULL,
 	address varchar(255),
@@ -20,7 +22,7 @@ CREATE TABLE Address(
 	PRIMARY KEY(`address_id`)
 );
 
-CREATE TABLE Payment(
+CREATE TABLE IF NOT EXISTS Payment(
     payment_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     payment_type varchar(255),
@@ -31,7 +33,7 @@ CREATE TABLE Payment(
     PRIMARY KEY(`payment_id`)
 );
 
-CREATE TABLE Products(
+CREATE TABLE IF NOT EXISTS Products(
 	product_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	name varchar(255),
 	description text,
@@ -43,7 +45,7 @@ CREATE TABLE Products(
 	PRIMARY KEY(`product_id`)
 );
 
-CREATE TABLE Orders(
+CREATE TABLE IF NOT EXISTS Orders(
     order_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
     total DECIMAL(12, 2) UNSIGNED, -- MAX: 9999999999.99, MIN: 0, non-negative values
@@ -52,7 +54,7 @@ CREATE TABLE Orders(
     PRIMARY KEY(`order_id`)
 );
 
-CREATE TABLE Order_items(
+CREATE TABLE IF NOT EXISTS Order_items(
     order_id INT UNSIGNED NOT NULL,
     product_id INT UNSIGNED NOT NULL,
     quantity INT UNSIGNED,
@@ -61,7 +63,7 @@ CREATE TABLE Order_items(
     PRIMARY KEY(`order_id`, `product_id`)
 );
 
-CREATE TABLE Price(
+CREATE TABLE IF NOT EXISTS Price(
     price_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     product_id INT UNSIGNED NOT NULL,
     original_price DECIMAL(12, 2) UNSIGNED,
