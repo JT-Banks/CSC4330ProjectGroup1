@@ -1,23 +1,66 @@
-# CSC4330ProjectGroup1
+# 🏫 Columbus Student Marketplace
 
-React application to provide the following features:
-- Login page
-- Profile page
-- Register page
-- Product page (to be implemented)
-- Shopping cart (to be implemented)
-- Cookies (Session token)
-- Logout functionality
+A modern, secure marketplace designed exclusively for students with .edu email addresses. Built with React, Node.js, Express, and MySQL.
 
-Steps to run locally: 
+## ✨ Features
+- 🔐 **Student Authentication** - .edu email required
+- 👤 **User Profiles** - Manage your account
+- 🛍️ **Product Catalog** - Browse student marketplace
+- 🛒 **Shopping Cart** - Add items to cart
+- ❤️ **Wishlist** - Save items for later
+- 📊 **User Dashboard** - Track your activity
+- 🔒 **JWT Security** - Secure session management
 
-**Make sure you have the following applications installed and configured:**
-- [***Xampp for Windows and Linux***](https://www.apachefriends.org/download.html)
-- [***Mamp for Mac***](https://www.mamp.info/en/downloads/) \
-Example of Xampp on Windows: \
-![image](https://user-images.githubusercontent.com/48796307/161466548-f88cf614-1cd7-4f29-9424-8fce031faf5e.png) 
+## 🚀 **Live Demo**
+- **Frontend:** [Coming Soon - Netlify URL]
+- **Backend API:** [Coming Soon - Railway URL]
 
-1. Clone Repo
+## 💻 **Local Development**
+
+### Prerequisites
+- Node.js (v16+)
+- MySQL (v8+)
+- Git
+
+### Setup
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/columbus-marketplace.git
+cd columbus-marketplace
+
+# Install backend dependencies
+npm install
+
+# Install frontend dependencies
+cd client && npm install && cd ..
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database credentials
+
+# Set up database
+npm run setup-db
+
+# Start development servers
+npm run dev
+```
+
+### Environment Variables
+```env
+DATABASE_HOST=localhost
+DATABASE_USER=your_db_user
+DATABASE_PASSWORD=your_db_password
+DATABASE=Columbus_Marketplace
+JWT_SECRET=your_secret_key
+```
+
+## 🌐 **Deployment**
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions using:
+- **Frontend:** Netlify (Free)
+- **Backend:** Railway (Free)
+- **Database:** Railway MySQL (Free)
+
+## 📁 **Project Structure**
 2. In a terminal, in the parent directory of the application: ``npm install``
 3. Utilize the script located in the ``Database`` folder, simply copy and paste or load the script and run it to load the database.
 4. Once installation is finished: ``npm start``

@@ -1,0 +1,22 @@
+<!-- Category Icons SVG Sprite -->
+<svg style="display: none;">
+  <!-- Electronics Icon -->
+  <symbol id="electronics-icon" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+  </symbol>
+  
+  <!-- Clothing Icon -->
+  <symbol id="clothing-icon" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2l3 3h4v2l-1.5 1.5v10.5c0 1.1-.9 2-2 2h-7c-1.1 0-2-.9-2-2V8.5L5 7V5h4l3-3z"/>
+  </symbol>
+  
+  <!-- Home & Garden Icon -->
+  <symbol id="home-icon" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+  </symbol>
+  
+  <!-- Sports Icon -->
+  <symbol id="sports-icon" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.06 16.92C6.15 18.34 2.66 14.85 2.08 10.06L9 17l1.94-2.06zM8.94 5.08C13.85 5.66 17.34 9.15 17.92 13.94L11 7L9.06 9.06z"/>
+  </symbol>
+</svg>

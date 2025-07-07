@@ -2,13 +2,15 @@ const express = require('express')
 const authController = require('../controllers/authController')
 const router = express.Router()
 
-//Control to pass to pages to auth(authentication)
-router.post('/register', authController.register) //register page
+//API routes for authentication
+router.post('/register', authController.register) //register endpoint
 
-router.post('/login', authController.login) //login page
+router.post('/login', authController.login) //login endpoint
 
-router.get('/logout', authController.logout) //logout page
+router.get('/logout', authController.logout) //logout endpoint
 
-router.get('/product/:id', authController.products) //product page
+router.get('/verify', authController.verify) //verify token endpoint
+
+router.get('/product/:id', authController.products) //product endpoint
 
 module.exports = router 

@@ -1,23 +1,28 @@
 {
-  "name": "login-react",
+  "name": "columbus-marketplace",
   "version": "1.0.0",
-  "description": "",
+  "description": "Columbus Student Marketplace - Backend API",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "setup-db": "node setup-database.js",
+    "build": "cd client && npm run build",
+    "deploy": "npm run build && npm start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^7.6.0",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "hbs": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
     "nodemon": "^2.0.15"
   }
 }

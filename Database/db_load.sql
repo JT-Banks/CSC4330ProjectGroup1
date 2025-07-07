@@ -1,4 +1,5 @@
-CREATE DATABASE Columbus_Marketplace;
+CREATE DATABASE IF NOT EXISTS Columbus_Marketplace;
+USE Columbus_Marketplace;
 
 CREATE TABLE Users(
 	user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -52,12 +53,12 @@ CREATE TABLE Orders(
 );
 
 CREATE TABLE Order_items(
-    order_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    order_id INT UNSIGNED NOT NULL,
     product_id INT UNSIGNED NOT NULL,
     quantity INT UNSIGNED,
     FOREIGN KEY(product_id) REFERENCES Products(product_id),
     FOREIGN KEY(order_id) REFERENCES Orders(order_id),
-    PRIMARY KEY(`order_id`)
+    PRIMARY KEY(`order_id`, `product_id`)
 );
 
 CREATE TABLE Price(

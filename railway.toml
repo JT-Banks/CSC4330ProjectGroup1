@@ -1,0 +1,11 @@
+# Railway Deployment Configuration
+# This file tells Railway how to deploy your app
+
+[build]
+  command = "npm install && npm run setup-db"
+
+[deploy]
+  command = "npm start"
+
+[env]
+  NODE_ENV = "production"
