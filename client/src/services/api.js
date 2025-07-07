@@ -1,5 +1,9 @@
 import axios from 'axios'
 
+// Debug: Log the environment variable value
+console.log('🔍 VITE_API_URL:', import.meta.env.VITE_API_URL)
+console.log('🔍 All env vars:', import.meta.env)
+
 // Create axios instance with base configuration
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
@@ -7,6 +11,9 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
+
+// Debug: Log the actual baseURL being used
+console.log('🔍 Axios baseURL:', api.defaults.baseURL)
 
 // Add request interceptor to include auth token
 api.interceptors.request.use(
