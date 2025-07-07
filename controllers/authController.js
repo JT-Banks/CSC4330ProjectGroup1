@@ -82,7 +82,7 @@ exports.login = async (req, res) => {
 
 exports.register = (req, res) => {
     console.log(req.body) 
-    const { name, email, password } = req.body
+    const { name, email, password, passwordConfirm } = req.body
 
     // Validate .edu email requirement
     if (!email.endsWith('.edu')) {
