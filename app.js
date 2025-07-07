@@ -52,12 +52,16 @@ userDB.connect((error) => {
         console.log("Database Host:", process.env.DATABASE_HOST)
         console.log("Database User:", process.env.DATABASE_USER)
         console.log("Database Name:", process.env.DATABASE)
+        
+        // Don't exit the process - let the app start without database for now
+        console.log("⚠️  Starting server without database connection...")
     }
     else {
         console.log("✅ MySQL connecting .... OK!")
         console.log("📊 Connected to database:", process.env.DATABASE)
-        console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
     }
+    
+    console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
 })
 
 //Define API routes
