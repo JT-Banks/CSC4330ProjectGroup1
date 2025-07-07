@@ -91,7 +91,11 @@ userDB.connect(async (error) => {
         }
     }
     
-    console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
+    // Start the server after database connection...
+    app.listen(port, () => {
+        console.log("Server started on localhost port " + port + " ... OK!")
+        console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
+    })
 })
 
 //Define API routes
@@ -102,11 +106,7 @@ app.use('/api/auth', require('./routes/auth'))
 app.get('/health', (req, res) => {
     res.status(200).json({ 
         status: 'OK', 
-        message: 'Columbus Student Marketplace API is running',
+        message: 'Columbus Student Marketplace API backend is running',
         timestamp: new Date().toISOString()
     })
-})
-
-app.listen(port, () => {
-    console.log("Server started on localhost port " + port + " ... OK!")
 })
