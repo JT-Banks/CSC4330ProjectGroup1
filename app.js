@@ -7,6 +7,11 @@ const cors = require('cors')
 
 var port = process.env.PORT || 5005;
 
+console.log("🔍 Starting Columbus Marketplace Backend...")
+console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
+console.log("🔍 PORT:", port)
+console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
+
 //dotenv gets .env file from root directory
 dotenv.config({ path: './.env' })
 
@@ -57,6 +62,13 @@ app.get('/health', (req, res) => {
     })
 })
 
+// Start the server immediately, regardless of database connection
+app.listen(port, () => {
+    console.log("Server started on localhost port " + port + " ... OK!")
+    console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
+})
+
+// Attempt database connection separately (non-blocking)
 userDB.connect(async (error) => {
     if (error) {
         console.log("❌ Database connection failed:", error.code)
@@ -65,8 +77,7 @@ userDB.connect(async (error) => {
         console.log("Database User:", process.env.DATABASE_USER)
         console.log("Database Name:", process.env.DATABASE)
         
-        // Don't exit the process - let the app start without database for now
-        console.log("⚠️ Starting server without database connection...")
+        console.log("⚠️ Server will continue without database connection...")
     }
     else {
         console.log("✅ MySQL connecting .... OK!")
@@ -74,10 +85,4 @@ userDB.connect(async (error) => {
         console.log("📊 Database ready for use!")
         console.log("💡 Tables should already exist via DBeaver setup")
     }
-    
-    // Start the server after database connection...
-    app.listen(port, () => {
-        console.log("Server started on localhost port " + port + " ... OK!")
-        console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
-    })
 })
