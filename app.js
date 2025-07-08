@@ -17,7 +17,6 @@ dotenv.config({ path: './.env' })
 let userDB;
 
 if (process.env.DATABASE_URL) {
-    // Railway provides DATABASE_URL in format: mysql://user:password@host:port/database
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
     // Fallback to individual environment variables
@@ -46,6 +45,19 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
+
+//Define API routes BEFORE database connection
+app.use('/api', require('./routes/pages'))
+app.use('/api/auth', require('./routes/auth'))
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'Columbus Student Marketplace API backend is running',
+        timestamp: new Date().toISOString()
+    })
+})
 
 userDB.connect(async (error) => {
     if (error) {
@@ -95,18 +107,5 @@ userDB.connect(async (error) => {
     app.listen(port, () => {
         console.log("Server started on localhost port " + port + " ... OK!")
         console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
-    })
-})
-
-//Define API routes
-app.use('/api', require('./routes/pages'))
-app.use('/api/auth', require('./routes/auth'))
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
-        message: 'Columbus Student Marketplace API backend is running',
-        timestamp: new Date().toISOString()
     })
 })
