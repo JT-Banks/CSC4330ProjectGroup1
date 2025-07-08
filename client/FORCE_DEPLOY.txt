@@ -1,7 +1,8 @@
-# Force Netlify Redeploy
+# Force Netlify Redeploy - AGGRESSIVE CACHE BUST
 # This file will trigger a new deployment
 
-timestamp: 2025-07-08_HARDCODED_API_URL_FIX
-issue: 404_error_frontend_still_calling_netlify_instead_of_railway
-fix: COMPLETELY_HARDCODED_railway_url_no_detection_logic
-update: 15:30:00
+timestamp: 2025-07-08_16:00:00_CACHE_BUST
+issue: FRONTEND_STILL_CALLING_NETLIFY_URL_NOT_RAILWAY
+fix: AGGRESSIVE_CACHE_BUSTING_BUILD_TIMESTAMP
+status: LOCAL_WORKS_PRODUCTION_FAILS
+deployment_count: 15

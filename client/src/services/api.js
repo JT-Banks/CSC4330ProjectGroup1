@@ -4,12 +4,16 @@ import axios from 'axios'
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
+  console.log('🚨 DEBUGGING - hostname detected:', hostname)
+  
   // Use local backend only for localhost development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    console.log('🚨 USING LOCAL BACKEND')
     return 'http://localhost:5005/api'
   }
   
   // ALWAYS use Railway backend for any deployed site
+  console.log('🚨 USING RAILWAY BACKEND')
   return 'https://columbus-marketplace-backend-production.up.railway.app/api'
 }
 
@@ -18,6 +22,7 @@ const API_URL = getApiUrl()
 console.log('🔍 Production API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
+console.log('🔍 BUILD TIMESTAMP: 2025-07-08-16:00:00') // Force new build
 
 // Create axios instance with hardcoded Railway URL
 const api = axios.create({

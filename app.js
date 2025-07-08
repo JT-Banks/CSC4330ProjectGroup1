@@ -19,7 +19,11 @@ dotenv.config({ path: './.env' })
 // Support both individual variables and Railway's DATABASE_URL format
 let userDB;
 
-if (process.env.DATABASE_URL) {
+// Skip database connection for Railway debugging
+if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    console.log("⚠️ No DATABASE_URL found in production, skipping DB connection")
+    userDB = null
+} else if (process.env.DATABASE_URL) {
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
     // Fallback to individual environment variables
@@ -72,26 +76,38 @@ app.get('/health', (req, res) => {
 })
 
 // Start the server immediately, regardless of database connection
-app.listen(port, () => {
-    console.log("Server started on localhost port " + port + " ... OK!")
-    console.log("🚀 Server is currently running, check browser @ http://localhost:" + port)
+const server = app.listen(port, () => {
+    console.log("✅ Server started on port " + port)
+    console.log("🚀 Server is ready to accept connections")
+    console.log("🔗 Health endpoint: http://localhost:" + port + "/health")
+})
+
+// Graceful error handling
+server.on('error', (error) => {
+    console.log("❌ Server error:", error)
+})
+
+process.on('uncaughtException', (error) => {
+    console.log("❌ Uncaught exception:", error)
+})
+
+process.on('unhandledRejection', (error) => {
+    console.log("❌ Unhandled rejection:", error)
 })
 
 // Attempt database connection separately (non-blocking)
-userDB.connect(async (error) => {
-    if (error) {
-        console.log("❌ Database connection failed:", error.code)
-        console.log("Please check .env file and ensure MySQL is running")
-        console.log("Database Host:", process.env.DATABASE_HOST)
-        console.log("Database User:", process.env.DATABASE_USER)
-        console.log("Database Name:", process.env.DATABASE)
-        
-        console.log("⚠️ Server will continue without database connection...")
-    }
-    else {
-        console.log("✅ MySQL connecting .... OK!")
-        console.log("📊 Connected to database:", process.env.DATABASE)
-        console.log("📊 Database ready for use!")
-        console.log("💡 Tables should already exist via DBeaver setup")
-    }
-})
+if (userDB) {
+    userDB.connect(async (error) => {
+        if (error) {
+            console.log("❌ Database connection failed:", error.code)
+            console.log("📋 Error details:", error.message)
+            console.log("⚠️ Server will continue without database connection...")
+        }
+        else {
+            console.log("✅ MySQL connected successfully!")
+            console.log("📊 Database ready for use!")
+        }
+    })
+} else {
+    console.log("⚠️ Database connection skipped (no DATABASE_URL in production)")
+}
