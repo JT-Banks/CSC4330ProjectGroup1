@@ -35,7 +35,7 @@ async function createMinimalTables() {
         console.log('📋 Tables in database:', rows.map(row => Object.values(row)[0]))
         
     } catch (error) {
-        console.log('❌ Error:', error.message)
+        console.error('❌ Error:', error.message)
     } finally {
         if (connection) {
             await connection.end()
