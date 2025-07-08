@@ -1,25 +1,30 @@
 import axios from 'axios'
 
-// Debug: Log the environment variable value
+// Debug: Log the environment and location info
 console.log('🔍 VITE_API_URL:', import.meta.env.VITE_API_URL)
-console.log('🔍 All env vars:', import.meta.env)
+console.log('🔍 window.location.hostname:', window.location.hostname)
+console.log('🔍 window.location.href:', window.location.href)
+
+// Always use the Railway backend for production
+const PRODUCTION_API_URL = 'https://columbus-marketplace-backend-production.up.railway.app/api'
 
 // Determine the API URL based on environment
 const getApiUrl = () => {
-  // Check if we're in development (localhost)
-  const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  const hostname = window.location.hostname
+  console.log('🔍 Current hostname:', hostname)
   
-  if (isDevelopment) {
-    // Use local backend for development
-    return import.meta.env.VITE_API_URL || 'http://localhost:5005/api'
+  // Only use local backend if we're actually on localhost
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    console.log('🔍 Using local backend')
+    return 'http://localhost:5005/api'
   } else {
-    // Always use Railway backend for production/deployed sites
-    return 'https://columbus-marketplace-backend-production.up.railway.app/api'
+    console.log('🔍 Using production backend (Railway)')
+    return PRODUCTION_API_URL
   }
 }
 
 const apiUrl = getApiUrl()
-console.log('🔍 Determined API URL:', apiUrl)
+console.log('🔍 Final API URL:', apiUrl)
 
 // Create axios instance with base configuration
 const api = axios.create({
