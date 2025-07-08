@@ -68,7 +68,7 @@ userDB.connect(async (error) => {
         console.log("Database Name:", process.env.DATABASE)
         
         // Don't exit the process - let the app start without database for now
-        console.log("⚠️  Starting server without database connection...")
+        console.log("⚠️ Starting server without database connection...")
     }
     else {
         console.log("✅ MySQL connecting .... OK!")
