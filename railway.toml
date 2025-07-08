@@ -5,7 +5,7 @@
   command = "npm install"
 
 [deploy]
-  command = "npm start"
+  command = "node railway-db-setup.js && npm start"
 
 [env]
   NODE_ENV = "production"

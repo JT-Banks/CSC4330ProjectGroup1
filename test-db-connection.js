@@ -38,7 +38,7 @@ connection.connect((error) => {
         console.log('  Port:', error.port)
     } else {
         console.log('✅ Database connection successful!')
-        console.log('🎉 Your database is working correctly!')
+        console.log('🎉 Database is working correctly!')
     }
     connection.end()
     process.exit(error ? 1 : 0)
