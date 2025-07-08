@@ -1,0 +1,20 @@
+# Railway ignore file - exclude frontend and unnecessary files
+client/
+.vscode/
+public/
+*.md
+debug-steps.md
+DEPLOYMENT.md
+netlify.toml
+.env.local
+.env.production
+manual-table-creation.sql
+minimal-setup.js
+railway-db-setup.js
+railway-db-setup.sh
+test-db-connection.js
+setup-database.js
+Database/
+.git/
+node_modules/
+*.log
