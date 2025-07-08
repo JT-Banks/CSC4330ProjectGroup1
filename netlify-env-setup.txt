@@ -1,4 +1,0 @@
-# Netlify Environment Variables
-# Add this in your Netlify dashboard under Site Settings > Environment Variables
-
-VITE_API_URL=https://columbus-marketplace-backend-production.up.railway.app/api
