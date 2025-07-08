@@ -3,47 +3,66 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config()
 
-// Create connection without specifying database initially
+// Create connection 
 // Support both individual variables and Railway's DATABASE_URL format
 let connection;
 
 if (process.env.DATABASE_URL) {
     // Railway provides DATABASE_URL in format: mysql://user:password@host:port/database
     connection = mysql.createConnection(process.env.DATABASE_URL)
+    console.log('🔗 Using DATABASE_URL connection for Railway')
 } else {
     // Fallback to individual environment variables
     connection = mysql.createConnection({
         host: process.env.DATABASE_HOST,
         user: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE, // Add database name for local connections
         multipleStatements: true
     })
+    console.log('🔗 Using individual environment variables for local MySQL')
 }
 
 async function initializeDatabase() {
     console.log('🔄 Initializing Columbus Marketplace Database...')
     
     try {
-        // Read and execute the database schema
+        // Read the database schema
         const schemaPath = path.join(__dirname, 'Database', 'db_load.sql')
         const schema = fs.readFileSync(schemaPath, 'utf8')
         
-        connection.query(schema, (error, results) => {
-            if (error) {
-                // If tables already exist, that's OK - just proceed to load sample data
-                if (error.code === 'ER_TABLE_EXISTS_ERROR') {
-                    console.log('ℹ️  Database tables already exist, proceeding to load sample data...')
-                    loadSampleData()
-                } else {
-                    console.log('❌ Error creating database schema:', error)
-                    return
+        // Split the schema into individual statements
+        const statements = schema
+            .split(';')
+            .map(stmt => stmt.trim())
+            .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'))
+        
+        console.log(`📋 Found ${statements.length} SQL statements to execute`)
+        
+        // Execute each statement separately
+        for (let i = 0; i < statements.length; i++) {
+            const statement = statements[i]
+            if (statement.trim()) {
+                try {
+                    await new Promise((resolve, reject) => {
+                        connection.query(statement, (error, results) => {
+                            if (error) {
+                                console.log(`⚠️  Statement ${i + 1} warning:`, error.message)
+                                resolve() // Continue even if some statements fail
+                            } else {
+                                console.log(`✅ Statement ${i + 1} executed successfully`)
+                                resolve(results)
+                            }
+                        })
+                    })
+                } catch (error) {
+                    console.log(`❌ Error executing statement ${i + 1}:`, error.message)
                 }
-            } else {
-                console.log('✅ Database schema created successfully!')
-                // Now connect to the specific database and load sample data
-                loadSampleData()
             }
-        })
+        }
+        
+        console.log('✅ Database schema setup completed!')
+        loadSampleData()
         
     } catch (error) {
         console.log('❌ Error reading schema file:', error)
