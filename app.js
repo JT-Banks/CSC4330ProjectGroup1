@@ -46,9 +46,22 @@ app.use(cors({
         process.env.FRONTEND_URL || 'http://localhost:3000'
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    exposedHeaders: ['Set-Cookie'],
+    optionsSuccessStatus: 200, // For legacy browser support
+    preflightContinue: false
 }))
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+    console.log(`🔍 OPTIONS request from ${req.get('Origin')} for ${req.path}`)
+    res.header('Access-Control-Allow-Origin', req.get('Origin'))
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
+    res.header('Access-Control-Allow-Credentials', 'true')
+    res.sendStatus(200)
+})
 
 //parse JSON
 app.use(express.json())
