@@ -7,7 +7,8 @@ const cors = require('cors')
 
 var port = process.env.PORT || 5005;
 
-console.log("🔍 Starting Columbus Marketplace Backend...")
+console.log("🔍 Starting Columbus Marketplace Backend v2.0...")
+console.log("🔍 CORS Fix Applied - Build:", new Date().toISOString())
 console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
 console.log("🔍 PORT:", port)
 console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
