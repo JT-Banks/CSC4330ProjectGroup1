@@ -1,0 +1,6 @@
+# Force Netlify Redeploy
+# This file will trigger a new deployment
+
+timestamp: 2025-07-08_debug_deployment
+issue: 404_error_still_using_netlify_url_instead_of_railway
+fix: hardcoded_railway_url_in_api_js
