@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
 // Enable CORS for React frontend
 app.use(cors({
     origin: [
-        'http://localhost:3000', 
+        'http://localhost:3000',
         'http://localhost:5173',
         'https://columbusmarketplace.netlify.app',
         'https://columbus-marketplace.netlify.app',
@@ -68,8 +68,8 @@ app.use('/api/auth', require('./routes/auth'))
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
+    res.status(200).json({
+        status: 'OK',
         message: 'Columbus Student Marketplace API backend is running',
         timestamp: new Date().toISOString()
     })

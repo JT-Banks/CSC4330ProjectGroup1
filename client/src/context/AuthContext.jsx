@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import axios from 'axios'
+import { authAPI } from '../services/api'
 
 const AuthContext = createContext()
 
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         
         // Verify token with backend
-        const response = await axios.get('/api/auth/verify')
+        const response = await authAPI.verify()
         setUser(response.data.user)
       }
     } catch (error) {
@@ -42,10 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password
-      })
+      const response = await authAPI.login(email, password)
 
       const { token, user } = response.data
       
@@ -76,11 +73,7 @@ export const AuthProvider = ({ children }) => {
         }
       }
 
-      const response = await axios.post('/api/auth/register', {
-        name,
-        email,
-        password
-      })
+      const response = await authAPI.register(name, email, password)
 
       return { 
         success: true, 
