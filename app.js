@@ -27,11 +27,12 @@ if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
     // Fallback to individual environment variables
+    // Support both Railway's naming convention and custom names
     userDB = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE
+        host: process.env.DATABASE_HOST || process.env.MYSQLHOST || process.env.MYSQL_HOST,
+        user: process.env.DATABASE_USER || process.env.MYSQLUSER || process.env.MYSQL_USER,
+        password: process.env.DATABASE_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD,
+        database: process.env.DATABASE || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE
     })
 }
 
