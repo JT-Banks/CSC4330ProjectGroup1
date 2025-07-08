@@ -1,41 +1,33 @@
 import axios from 'axios'
 
-// Debug: Log the environment and location info
-console.log('🔍 VITE_API_URL:', import.meta.env.VITE_API_URL)
-console.log('🔍 window.location.hostname:', window.location.hostname)
-console.log('🔍 window.location.href:', window.location.href)
-
-// Always use the Railway backend for production
-const PRODUCTION_API_URL = 'https://columbus-marketplace-backend-production.up.railway.app/api'
-
-// Determine the API URL based on environment
+// Production-ready API URL detection
 const getApiUrl = () => {
   const hostname = window.location.hostname
-  console.log('🔍 Current hostname:', hostname)
   
-  // Only use local backend if we're actually on localhost
+  // Use local backend only for localhost development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    console.log('🔍 Using local backend')
     return 'http://localhost:5005/api'
-  } else {
-    console.log('🔍 Using production backend (Railway)')
-    return PRODUCTION_API_URL
   }
+  
+  // ALWAYS use Railway backend for any deployed site
+  return 'https://columbus-marketplace-backend-production.up.railway.app/api'
 }
 
-const apiUrl = getApiUrl()
-console.log('🔍 Final API URL:', apiUrl)
+const API_URL = getApiUrl()
 
-// Create axios instance with base configuration
+console.log('🔍 Production API URL:', API_URL)
+console.log('🔍 Current hostname:', window.location.hostname)
+console.log('🔍 Current location:', window.location.href)
+
+// Create axios instance with hardcoded Railway URL
 const api = axios.create({
-  baseURL: apiUrl,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// Debug: Log the actual baseURL being used
-console.log('🔍 Axios baseURL:', api.defaults.baseURL)
+console.log('🔍 Axios baseURL (hardcoded):', api.defaults.baseURL)
 
 // Add request interceptor to include auth token
 api.interceptors.request.use(
