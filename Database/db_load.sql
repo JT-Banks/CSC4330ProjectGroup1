@@ -1,4 +1,3 @@
--- Use existing Railway database (don't create new one)
 -- CREATE DATABASE IF NOT EXISTS Columbus_Marketplace;
 -- USE Columbus_Marketplace;
 
