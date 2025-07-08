@@ -50,7 +50,7 @@ app.use(cookieParser())
 userDB.connect(async (error) => {
     if (error) {
         console.log("❌ Database connection failed:", error.code)
-        console.log("Please check your .env file and ensure MySQL is running")
+        console.log("Please check .env file and ensure MySQL is running")
         console.log("Database Host:", process.env.DATABASE_HOST)
         console.log("Database User:", process.env.DATABASE_USER)
         console.log("Database Name:", process.env.DATABASE)

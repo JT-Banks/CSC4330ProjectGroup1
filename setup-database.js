@@ -106,7 +106,7 @@ function loadSampleData() {
                 console.log('   - Tables: Users, Products, Orders, etc.')
                 console.log('   - Sample users and products added')
                 console.log('')
-                console.log('🚀 You can now start your server with: npm start')
+                console.log('🚀 Can now start server with: npm start')
             }
             dbConnection.end()
         })
