@@ -37,9 +37,12 @@ app.use(cors({
         'http://localhost:3000', 
         'http://localhost:5173',
         'https://columbusmarketplace.netlify.app',
+        'https://columbus-marketplace.netlify.app',
         process.env.FRONTEND_URL || 'http://localhost:3000'
     ],
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }))
 
 //parse JSON
@@ -48,6 +51,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
+
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+    console.log(`🔍 ${req.method} ${req.path} from ${req.get('Origin') || 'unknown origin'}`)
+    next()
+})
 
 //Define API routes BEFORE database connection
 app.use('/api', require('./routes/pages'))
