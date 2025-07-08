@@ -6,7 +6,7 @@ console.log('🔍 All env vars:', import.meta.env)
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://columbus-marketplace-backend-production.up.railway.app/api',
   headers: {
     'Content-Type': 'application/json',
   },
