@@ -13,8 +13,13 @@ minimal-setup.js
 railway-db-setup.js
 railway-db-setup.sh
 test-db-connection.js
+test-health.js
+test-register.js
 setup-database.js
 Database/
 .git/
 node_modules/
 *.log
+*.test.js
+test-*.js
+*.spec.js
