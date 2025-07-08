@@ -17,23 +17,30 @@ console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
 dotenv.config({ path: './.env' })
 
 //Database connections are held in .env
-// Support both individual variables and Railway's DATABASE_URL format
+// Database connections - prefer individual variables for Railway
 let userDB;
 
-// Skip database connection for Railway debugging
-if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
-    console.log("⚠️ No DATABASE_URL found in production, skipping DB connection")
-    userDB = null
+// For Railway, use individual environment variables (more reliable)
+if (process.env.NODE_ENV === 'production') {
+    console.log("🔍 Production environment detected - using Railway MySQL variables")
+    userDB = mysql.createConnection({
+        host: process.env.MYSQL_HOST || process.env.MYSQLHOST || process.env.DATABASE_HOST,
+        user: process.env.MYSQL_USER || process.env.MYSQLUSER || process.env.DATABASE_USER,
+        password: process.env.MYSQL_PASSWORD || process.env.MYSQLPASSWORD || process.env.DATABASE_PASSWORD,
+        database: process.env.MYSQL_DATABASE || process.env.MYSQLDATABASE || process.env.DATABASE,
+        port: process.env.MYSQL_PORT || process.env.MYSQLPORT || 3306
+    })
 } else if (process.env.DATABASE_URL) {
+    console.log("🔍 Using DATABASE_URL for local development")
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
-    // Fallback to individual environment variables
-    // Support both Railway's naming convention and custom names
+    // Fallback to individual environment variables for local development
+    console.log("🔍 Using individual environment variables for local development")
     userDB = mysql.createConnection({
-        host: process.env.DATABASE_HOST || process.env.MYSQLHOST || process.env.MYSQL_HOST,
-        user: process.env.DATABASE_USER || process.env.MYSQLUSER || process.env.MYSQL_USER,
-        password: process.env.DATABASE_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD,
-        database: process.env.DATABASE || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE
+        host: process.env.DATABASE_HOST || 'localhost',
+        user: process.env.DATABASE_USER || 'root',
+        password: process.env.DATABASE_PASSWORD || '',
+        database: process.env.DATABASE || 'Columbus_Marketplace'
     })
 }
 
@@ -112,17 +119,33 @@ process.on('unhandledRejection', (error) => {
 
 // Attempt database connection separately (non-blocking)
 if (userDB) {
+    console.log("\n🔍 Testing Database Connection...")
+    console.log("📋 Environment Variables:")
+    console.log("  DATABASE_URL:", process.env.DATABASE_URL ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_HOST:", process.env.DATABASE_HOST ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_USER:", process.env.DATABASE_USER ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_PASSWORD:", process.env.DATABASE_PASSWORD ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE:", process.env.DATABASE || "❌ Missing")
+    console.log("\n📋 Railway MySQL Variables:")
+    console.log("  MYSQL_HOST:", process.env.MYSQL_HOST ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQL_USER:", process.env.MYSQL_USER ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQL_PASSWORD:", process.env.MYSQL_PASSWORD ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQL_DATABASE:", process.env.MYSQL_DATABASE || "❌ Missing")
+    console.log("  MYSQL_PORT:", process.env.MYSQL_PORT || "❌ Missing")
+    
     userDB.connect(async (error) => {
         if (error) {
-            console.log("❌ Database connection failed:", error.code)
-            console.log("📋 Error details:", error.message)
+            console.log("\n❌ Database connection failed:")
+            console.log("  Error Code:", error.code)
+            console.log("  Error Message:", error.message)
+            console.log("  Host:", error.hostname || "undefined")
+            console.log("  Port:", error.port || "undefined")
             console.log("⚠️ Server will continue without database connection...")
-        }
-        else {
-            console.log("✅ MySQL connected successfully!")
+        } else {
+            console.log("\n✅ MySQL connected successfully!")
             console.log("📊 Database ready for use!")
         }
     })
 } else {
-    console.log("⚠️ Database connection skipped (no DATABASE_URL in production)")
+    console.log("⚠️ Database connection skipped - no userDB object created")
 }
