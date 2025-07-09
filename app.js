@@ -104,10 +104,12 @@ app.get('/health', (req, res) => {
 })
 
 // Start the server immediately, regardless of database connection
+console.log("🔍 About to start server on port:", port)
 const server = app.listen(port, () => {
     console.log("✅ Server started on port " + port)
     console.log("🚀 Server is ready to accept connections")
     console.log("🔗 Health endpoint: http://localhost:" + port + "/health")
+    console.log("🌍 Railway URL: https://columbus-marketplace-backend-production.up.railway.app")
 })
 
 // Graceful error handling
