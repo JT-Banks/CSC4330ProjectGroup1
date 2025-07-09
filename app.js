@@ -20,14 +20,6 @@ dotenv.config({ path: './.env' })
 // Database connections - prefer individual variables for Railway
 let userDB;
 
-app.use((req, res, next) => {
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
-
 // For Railway, use individual environment variables (more reliable)
 // Check for Railway environment variables first (Railway doesn't always set NODE_ENV=production)
 if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 'production') {
@@ -70,8 +62,18 @@ const corsOptions = {
     optionsSuccessStatus: 200,
     preflightContinue: false
 };
+
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+    console.log(`🔍 OPTIONS request from ${req.get('Origin')} for ${req.path}`)
+    res.header('Access-Control-Allow-Origin', req.get('Origin'))
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
+    res.header('Access-Control-Allow-Credentials', 'true')
+    res.sendStatus(200)
+})
 
 //parse JSON
 app.use(express.json())
