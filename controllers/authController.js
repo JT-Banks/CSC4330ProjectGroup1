@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
             })
         }
 
-        userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
+        userDB.query('SELECT * FROM Users WHERE email = ?', [email], async (error, results) => {
             if (error) {
                 console.log("❌ Login database error:", error)
                 return res.status(500).json({
@@ -135,7 +135,7 @@ exports.register = async (req, res) => {
             })
         }
 
-        userDB.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
+        userDB.query('SELECT email FROM Users WHERE email = ?', [email], async (error, result) => {
             if (error) {
                 console.log("❌ Database query error:", error)
                 return res.status(500).json({
@@ -161,7 +161,7 @@ exports.register = async (req, res) => {
             try {
                 let hashedPassword = await bcrypt.hash(password, 8)
 
-                userDB.query('INSERT INTO users SET ?', { 
+                userDB.query('INSERT INTO Users SET ?', { 
                     name: name, 
                     email: email, 
                     password: hashedPassword 
@@ -222,7 +222,7 @@ exports.isLoggedIn = async (req, res, next) => {
         const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
         // Check if user still exists
-        userDB.query('SELECT user_id, name, email FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
+        userDB.query('SELECT user_id, name, email FROM Users WHERE user_id = ?', [decoded.id], (error, result) => {
             if (error) {
                 console.log('Database error:', error)
                 return next()
@@ -248,7 +248,7 @@ exports.isLoggedIn = async (req, res, next) => {
 exports.products = (req, res) => {
     const product_id = req.params.id
     try {
-        userDB.query('SELECT * FROM products WHERE product_id = ?', [product_id], (error, result) => {
+        userDB.query('SELECT * FROM Products WHERE product_id = ?', [product_id], (error, result) => {
             if (error) {
                 console.log(error)
                 return res.status(500).json({
@@ -304,7 +304,7 @@ exports.verify = async (req, res) => {
 
         const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
 
-        userDB.query('SELECT user_id, name, email FROM users WHERE user_id = ?', [decoded.id], (error, result) => {
+        userDB.query('SELECT user_id, name, email FROM Users WHERE user_id = ?', [decoded.id], (error, result) => {
             if (error) {
                 console.log(error)
                 return res.status(500).json({
