@@ -24,11 +24,11 @@ let userDB;
 if (process.env.NODE_ENV === 'production') {
     console.log("🔍 Production environment detected - using Railway MySQL variables")
     userDB = mysql.createConnection({
-        host: process.env.MYSQL_HOST || process.env.MYSQLHOST || process.env.DATABASE_HOST,
-        user: process.env.MYSQL_USER || process.env.MYSQLUSER || process.env.DATABASE_USER,
-        password: process.env.MYSQL_PASSWORD || process.env.MYSQLPASSWORD || process.env.DATABASE_PASSWORD,
-        database: process.env.MYSQL_DATABASE || process.env.MYSQLDATABASE || process.env.DATABASE,
-        port: process.env.MYSQL_PORT || process.env.MYSQLPORT || 3306
+        host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DATABASE_HOST,
+        user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DATABASE_USER,
+        password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DATABASE_PASSWORD,
+        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DATABASE,
+        port: process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306
     })
 } else if (process.env.DATABASE_URL) {
     console.log("🔍 Using DATABASE_URL for local development")
@@ -120,18 +120,24 @@ process.on('unhandledRejection', (error) => {
 // Attempt database connection separately (non-blocking)
 if (userDB) {
     console.log("\n🔍 Testing Database Connection...")
-    console.log("📋 Environment Variables:")
-    console.log("  DATABASE_URL:", process.env.DATABASE_URL ? "✅ Set" : "❌ Missing")
-    console.log("  DATABASE_HOST:", process.env.DATABASE_HOST ? "✅ Set" : "❌ Missing")
-    console.log("  DATABASE_USER:", process.env.DATABASE_USER ? "✅ Set" : "❌ Missing")
-    console.log("  DATABASE_PASSWORD:", process.env.DATABASE_PASSWORD ? "✅ Set" : "❌ Missing")
-    console.log("  DATABASE:", process.env.DATABASE || "❌ Missing")
-    console.log("\n📋 Railway MySQL Variables:")
+    console.log("📋 Railway's Actual MySQL Variables:")
+    console.log("  MYSQLHOST:", process.env.MYSQLHOST ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQLUSER:", process.env.MYSQLUSER ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQLPASSWORD:", process.env.MYSQLPASSWORD ? "✅ Set" : "❌ Missing")
+    console.log("  MYSQLDATABASE:", process.env.MYSQLDATABASE || "❌ Missing")
+    console.log("  MYSQLPORT:", process.env.MYSQLPORT || "❌ Missing")
+    console.log("\n📋 Standard MySQL Variables:")
     console.log("  MYSQL_HOST:", process.env.MYSQL_HOST ? "✅ Set" : "❌ Missing")
     console.log("  MYSQL_USER:", process.env.MYSQL_USER ? "✅ Set" : "❌ Missing")
     console.log("  MYSQL_PASSWORD:", process.env.MYSQL_PASSWORD ? "✅ Set" : "❌ Missing")
     console.log("  MYSQL_DATABASE:", process.env.MYSQL_DATABASE || "❌ Missing")
     console.log("  MYSQL_PORT:", process.env.MYSQL_PORT || "❌ Missing")
+    console.log("\n📋 Generic Database Variables:")
+    console.log("  DATABASE_URL:", process.env.DATABASE_URL ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_HOST:", process.env.DATABASE_HOST ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_USER:", process.env.DATABASE_USER ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE_PASSWORD:", process.env.DATABASE_PASSWORD ? "✅ Set" : "❌ Missing")
+    console.log("  DATABASE:", process.env.DATABASE || "❌ Missing")
     
     userDB.connect(async (error) => {
         if (error) {
