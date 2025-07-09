@@ -1,25 +1,30 @@
 import axios from 'axios'
 
+// Production-ready API URL detection
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
   console.log('🚨 DEBUGGING - hostname detected:', hostname)
-
+  
+  // Use local backend only for localhost development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     console.log('🚨 USING LOCAL BACKEND')
     return 'http://localhost:5005/api'
   }
-
-  console.log('🚨 USING NETLIFY FUNCTIONS PROXY')
-  return '/.netlify/functions'
+  
+  // ALWAYS use Railway backend for any deployed site
+  console.log('🚨 USING RAILWAY BACKEND')
+  return 'https://columbus-marketplace-backend-production.up.railway.app/api'
 }
 
 const API_URL = getApiUrl()
 
-console.log('🔍 API URL:', API_URL)
+console.log('🔍 Production API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
+console.log('🔍 BUILD TIMESTAMP: 2025-07-09-REVERT-TO-RAILWAY') // Force new build
 
+// Create axios instance with Railway URL
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -27,7 +32,7 @@ const api = axios.create({
   },
 })
 
-console.log('🔍 Axios baseURL:', api.defaults.baseURL)
+console.log('🔍 Axios baseURL (Railway):', api.defaults.baseURL)
 
 api.interceptors.request.use(
   (config) => {

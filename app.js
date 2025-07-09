@@ -45,34 +45,42 @@ if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 
     })
 }
 
-// Enable CORS for React frontend
-const corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'https://columbusmarketplace.netlify.app',
-        'https://columbus-marketplace.netlify.app',
-        'https://www.columbusmarketplace.netlify.app',
-        'https://www.columbus-marketplace.netlify.app'
-    ],
+// Enable CORS for React frontend - Simplified approach
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://columbusmarketplace.netlify.app',
+            'https://columbus-marketplace.netlify.app',
+            'https://www.columbusmarketplace.netlify.app',
+            'https://www.columbus-marketplace.netlify.app'
+        ];
+        
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        
+        console.log('❌ CORS blocked origin:', origin);
+        return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
     exposedHeaders: ['Set-Cookie'],
-    optionsSuccessStatus: 200,
-    preflightContinue: false
-};
+    optionsSuccessStatus: 200
+}));
 
-app.use(cors(corsOptions));
-
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-    console.log(`🔍 OPTIONS request from ${req.get('Origin')} for ${req.path}`)
-    res.header('Access-Control-Allow-Origin', req.get('Origin'))
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
-    res.header('Access-Control-Allow-Credentials', 'true')
-    res.sendStatus(200)
+// Log CORS requests for debugging
+app.use((req, res, next) => {
+    console.log(`🔍 ${req.method} ${req.path} from ${req.get('Origin') || 'unknown origin'}`)
+    if (req.method === 'OPTIONS') {
+        console.log('🔍 Preflight request detected')
+    }
+    next()
 })
 
 //parse JSON
@@ -81,12 +89,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
-
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-    console.log(`🔍 ${req.method} ${req.path} from ${req.get('Origin') || 'unknown origin'}`)
-    next()
-})
 
 //Define API routes BEFORE database connection
 app.use('/api', require('./routes/pages'))
