@@ -20,6 +20,14 @@ dotenv.config({ path: './.env' })
 // Database connections - prefer individual variables for Railway
 let userDB;
 
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 // For Railway, use individual environment variables (more reliable)
 // Check for Railway environment variables first (Railway doesn't always set NODE_ENV=production)
 if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 'production') {
