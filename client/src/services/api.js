@@ -1,18 +1,16 @@
 import axios from 'axios'
 
-// Use Netlify redirects for production, local backend for development
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
   console.log('🚨 DEBUGGING - hostname detected:', hostname)
   
-  // Use local backend only for localhost development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     console.log('🚨 USING LOCAL BACKEND')
     return 'http://localhost:5005/api'
   }
-  
-  // Use relative URLs for production - Netlify redirects will handle the proxy
+
+
   console.log('🚨 USING NETLIFY REDIRECTS TO RAILWAY')
   return '/api'
 }

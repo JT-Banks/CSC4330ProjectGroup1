@@ -13,19 +13,24 @@ console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
 console.log("🔍 PORT:", port)
 console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
 
-//dotenv gets .env file from root directory
 dotenv.config({ path: './.env' })
+process.on('uncaughtException', err => {
+  console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', err => {
+  console.error('Unhandled Rejection:', err);
+});
 
-//Database connections are held in .env
-// Use Railway's DATABASE_URL directly (most reliable)
 let userDB;
 
 console.log("🔍 Main App: Initializing database connection...")
 console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
 console.log("🔍 MYSQLDATABASE:", process.env.MYSQLDATABASE)
 console.log("🔍 MYSQLHOST:", process.env.MYSQLHOST)
+console.log('--- ENV DUMP ---');
+console.log(process.env);
+console.log('-----------------');
 
-// Use Railway's DATABASE_URL for production
 if (process.env.DATABASE_URL) {
     console.log("🔍 Using Railway DATABASE_URL")
     userDB = mysql.createConnection(process.env.DATABASE_URL)
