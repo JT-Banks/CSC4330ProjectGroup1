@@ -66,17 +66,6 @@ const checkDatabaseConnection = () => {
 
 exports.login = async (req, res) => {
     try {
-        // Check database connection first
-        await checkDatabaseConnection()
-    } catch (dbError) {
-        console.log("❌ Database connection failed in login:", dbError.message)
-        return res.status(503).json({
-            success: false,
-            message: 'Database service unavailable. Please try again later.'
-        })
-    }
-    
-    try {
         const { email, password } = req.body
 
         if (!email || !password) {
@@ -94,9 +83,18 @@ exports.login = async (req, res) => {
             })
         }
 
+        // Check if userDB exists
+        if (!userDB) {
+            console.log("❌ No database connection available for login")
+            return res.status(503).json({
+                success: false,
+                message: 'Database service unavailable. Please try again later.'
+            })
+        }
+
         userDB.query('SELECT * FROM users WHERE email = ?', [email], async (error, results) => {
             if (error) {
-                console.log(error)
+                console.log("❌ Login database error:", error)
                 return res.status(500).json({
                     success: false,
                     message: 'Database error occurred'
@@ -136,7 +134,7 @@ exports.login = async (req, res) => {
         })
     }
     catch (error) {
-        console.log("Login error: " + error)
+        console.log("❌ Login general error:", error)
         res.status(500).json({
             success: false,
             message: 'Server error occurred'
@@ -148,86 +146,92 @@ exports.register = async (req, res) => {
     console.log("🔍 Register request received:", req.body)
     
     try {
-        // Check database connection first
-        await checkDatabaseConnection()
-    } catch (dbError) {
-        console.log("❌ Database connection failed in register:", dbError.message)
-        return res.status(503).json({
-            success: false,
-            message: 'Database service unavailable. Please try again later.'
-        })
-    }
-    
-    const { name, email, password, passwordConfirm } = req.body
+        const { name, email, password, passwordConfirm } = req.body
 
-    // Validate required fields
-    if (!name || !email || !password) {
-        return res.status(400).json({
-            success: false,
-            message: 'Name, email, and password are required'
-        })
-    }
-
-    if (!email.endsWith('.edu')) {
-        return res.status(400).json({
-            success: false,
-            message: 'Only .edu email addresses are allowed for student registration'
-        })
-    }
-
-    userDB.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
-        if (error) {
-            console.log(error)
-            return res.status(500).json({
-                success: false,
-                message: 'Database error occurred'
-            })
-        }
-
-        if (result.length > 0) {
+        // Validate required fields
+        if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
-                message: 'That email is already in use!'
+                message: 'Name, email, and password are required'
             })
         }
 
-        if (!password || password === '') {
+        if (!email.endsWith('.edu')) {
             return res.status(400).json({
                 success: false,
-                message: 'Password field cannot be blank!'
+                message: 'Only .edu email addresses are allowed for student registration'
             })
         }
 
-        try {
-            let hashedPassword = await bcrypt.hash(password, 8)
+        // Check if userDB exists and is connected
+        if (!userDB) {
+            console.log("❌ No database connection available")
+            return res.status(503).json({
+                success: false,
+                message: 'Database service unavailable. Please try again later.'
+            })
+        }
 
-            userDB.query('INSERT INTO users SET ?', { 
-                name: name, 
-                email: email, 
-                password: hashedPassword 
-            }, (error, results) => {
-                if (error) {
-                    console.log(error)
-                    return res.status(500).json({
-                        success: false,
-                        message: 'Failed to create user account'
-                    })
-                }
-
-                console.log(results)
-                return res.status(201).json({
-                    success: true,
-                    message: 'Student account created successfully!'
+        userDB.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
+            if (error) {
+                console.log("❌ Database query error:", error)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
                 })
-            })
-        } catch (error) {
-            console.log(error)
-            return res.status(500).json({
-                success: false,
-                message: 'Error creating account'
-            })
-        }
-    })
+            }
+
+            if (result.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'That email is already in use!'
+                })
+            }
+
+            if (!password || password === '') {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Password field cannot be blank!'
+                })
+            }
+
+            try {
+                let hashedPassword = await bcrypt.hash(password, 8)
+
+                userDB.query('INSERT INTO users SET ?', { 
+                    name: name, 
+                    email: email, 
+                    password: hashedPassword 
+                }, (error, results) => {
+                    if (error) {
+                        console.log("❌ User insert error:", error)
+                        return res.status(500).json({
+                            success: false,
+                            message: 'Failed to create user account'
+                        })
+                    }
+
+                    console.log("✅ User created successfully:", results)
+                    return res.status(201).json({
+                        success: true,
+                        message: 'Student account created successfully!'
+                    })
+                })
+            } catch (hashError) {
+                console.log("❌ Password hashing error:", hashError)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Error creating account'
+                })
+            }
+        })
+    } catch (generalError) {
+        console.log("❌ General register error:", generalError)
+        return res.status(500).json({
+            success: false,
+            message: 'Server error occurred'
+        })
+    }
 }
 
 exports.isLoggedIn = async (req, res, next) => {
