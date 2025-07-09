@@ -90,11 +90,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 
-//Define API routes BEFORE database connection
-app.use('/api', require('./routes/pages'))
-app.use('/api/auth', require('./routes/auth'))
-
-// Health check endpoint
+// Health check endpoint (before routes)
 app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'OK',
@@ -124,6 +120,16 @@ process.on('uncaughtException', (error) => {
 process.on('unhandledRejection', (error) => {
     console.log("❌ Unhandled rejection:", error)
 })
+
+// Define API routes AFTER server starts to avoid import issues
+console.log("🔍 Loading API routes...")
+try {
+    app.use('/api', require('./routes/pages'))
+    app.use('/api/auth', require('./routes/auth'))
+    console.log("✅ API routes loaded successfully")
+} catch (routeError) {
+    console.log("❌ Error loading routes:", routeError)
+}
 
 // Attempt database connection separately (non-blocking)
 if (userDB) {
