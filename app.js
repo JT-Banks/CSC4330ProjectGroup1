@@ -46,31 +46,24 @@ if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 
 }
 
 // Enable CORS for React frontend
-app.use(cors({
+const corsOptions = {
     origin: [
         'http://localhost:3000',
         'http://localhost:5173',
         'https://columbusmarketplace.netlify.app',
         'https://columbus-marketplace.netlify.app',
-        process.env.FRONTEND_URL || 'http://localhost:3000'
+        'https://www.columbusmarketplace.netlify.app',
+        'https://www.columbus-marketplace.netlify.app'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
     exposedHeaders: ['Set-Cookie'],
-    optionsSuccessStatus: 200, // For legacy browser support
+    optionsSuccessStatus: 200,
     preflightContinue: false
-}))
-
-// Handle preflight requests explicitly
-app.options('*', (req, res) => {
-    console.log(`🔍 OPTIONS request from ${req.get('Origin')} for ${req.path}`)
-    res.header('Access-Control-Allow-Origin', req.get('Origin'))
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
-    res.header('Access-Control-Allow-Credentials', 'true')
-    res.sendStatus(200)
-})
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 //parse JSON
 app.use(express.json())
