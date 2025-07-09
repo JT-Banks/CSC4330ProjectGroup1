@@ -21,8 +21,9 @@ dotenv.config({ path: './.env' })
 let userDB;
 
 // For Railway, use individual environment variables (more reliable)
-if (process.env.NODE_ENV === 'production') {
-    console.log("🔍 Production environment detected - using Railway MySQL variables")
+// Check for Railway environment variables first (Railway doesn't always set NODE_ENV=production)
+if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 'production') {
+    console.log("🔍 Railway environment detected - using Railway MySQL variables")
     userDB = mysql.createConnection({
         host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DATABASE_HOST,
         user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DATABASE_USER,
