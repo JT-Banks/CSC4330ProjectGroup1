@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-// Production-ready API URL detection
+// Use Netlify redirects for production, local backend for development
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
@@ -12,19 +12,19 @@ const getApiUrl = () => {
     return 'http://localhost:5005/api'
   }
   
-  // ALWAYS use Railway backend for any deployed site
-  console.log('🚨 USING RAILWAY BACKEND')
-  return 'https://columbus-marketplace-backend-production.up.railway.app/api'
+  // Use relative URLs for production - Netlify redirects will handle the proxy
+  console.log('🚨 USING NETLIFY REDIRECTS TO RAILWAY')
+  return '/api'
 }
 
 const API_URL = getApiUrl()
 
-console.log('🔍 Production API URL:', API_URL)
+console.log('🔍 API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
-console.log('🔍 BUILD TIMESTAMP: 2025-07-09-REVERT-TO-RAILWAY') // Force new build
+console.log('🔍 BUILD TIMESTAMP: 2025-07-09-NETLIFY-REDIRECTS') // Force new build
 
-// Create axios instance with Railway URL
+// Create axios instance
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -32,7 +32,7 @@ const api = axios.create({
   },
 })
 
-console.log('🔍 Axios baseURL (Railway):', api.defaults.baseURL)
+console.log('🔍 Axios baseURL (with redirects):', api.defaults.baseURL)
 
 api.interceptors.request.use(
   (config) => {
