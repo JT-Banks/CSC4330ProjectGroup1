@@ -4,21 +4,77 @@ const bcrypt = require('bcryptjs')
 const { promisify } = require('util') 
 
 //Database connections are held in .env
-// Support both individual variables and Railway's DATABASE_URL format
+// Database connections - prefer individual variables for Railway
 let userDB;
 
-if (process.env.DATABASE_URL) {
+// For Railway, use individual environment variables (more reliable)
+if (process.env.NODE_ENV === 'production') {
+    console.log("🔍 AuthController: Production environment detected - using Railway MySQL variables")
+    userDB = mysql.createConnection({
+        host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DATABASE_HOST,
+        user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DATABASE_USER,
+        password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DATABASE_PASSWORD,
+        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DATABASE,
+        port: process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306
+    })
+} else if (process.env.DATABASE_URL) {
+    console.log("🔍 AuthController: Using DATABASE_URL for local development")
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
+    // Fallback to individual environment variables for local development
+    console.log("🔍 AuthController: Using individual environment variables for local development")
     userDB = mysql.createConnection({
-        host: process.env.DATABASE_HOST,
-        user: process.env.DATABASE_USER,
-        password: process.env.DATABASE_PASSWORD,
-        database: process.env.DATABASE
+        host: process.env.DATABASE_HOST || 'localhost',
+        user: process.env.DATABASE_USER || 'root',
+        password: process.env.DATABASE_PASSWORD || '',
+        database: process.env.DATABASE || 'Columbus_Marketplace'
+    })
+}
+
+// Test database connection (non-blocking)
+if (userDB) {
+    userDB.connect((error) => {
+        if (error) {
+            console.log("❌ AuthController: Database connection failed:", error.message)
+            console.log("⚠️ AuthController: Will attempt to reconnect on each request")
+        } else {
+            console.log("✅ AuthController: Database connected successfully!")
+        }
+    })
+} else {
+    console.log("⚠️ AuthController: No database connection configured")
+}
+
+// Helper function to check database connection
+const checkDatabaseConnection = () => {
+    return new Promise((resolve, reject) => {
+        if (!userDB) {
+            reject(new Error('No database connection available'))
+            return
+        }
+        
+        userDB.ping((error) => {
+            if (error) {
+                reject(error)
+            } else {
+                resolve(true)
+            }
+        })
     })
 }
 
 exports.login = async (req, res) => {
+    try {
+        // Check database connection first
+        await checkDatabaseConnection()
+    } catch (dbError) {
+        console.log("❌ Database connection failed in login:", dbError.message)
+        return res.status(503).json({
+            success: false,
+            message: 'Database service unavailable. Please try again later.'
+        })
+    }
+    
     try {
         const { email, password } = req.body
 
@@ -87,9 +143,29 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.register = (req, res) => {
-    console.log(req.body) 
+exports.register = async (req, res) => {
+    console.log("🔍 Register request received:", req.body)
+    
+    try {
+        // Check database connection first
+        await checkDatabaseConnection()
+    } catch (dbError) {
+        console.log("❌ Database connection failed in register:", dbError.message)
+        return res.status(503).json({
+            success: false,
+            message: 'Database service unavailable. Please try again later.'
+        })
+    }
+    
     const { name, email, password, passwordConfirm } = req.body
+
+    // Validate required fields
+    if (!name || !email || !password) {
+        return res.status(400).json({
+            success: false,
+            message: 'Name, email, and password are required'
+        })
+    }
 
     if (!email.endsWith('.edu')) {
         return res.status(400).json({
@@ -201,13 +277,6 @@ exports.isLoggedIn = async (req, res, next) => {
     }
 }
 
-/* TODO: Need to implement transformation logic to retrieve products table 
-*  Objects queried from database come in as objects, and need to be iterated over to retrieve actual values
-*  This needs to be transformed via handlebars template.
-*  Example: Query returns an object with a key of products, and a value of an array of objects
-*  This array of objects needs to be iterated over to retrieve the actual values
-*  HBS: {{#each products}} {{this.product_name}} {{/each}}
-*/
 exports.products = (req, res) => {
     const product_id = req.params.id
     try {
