@@ -1,30 +1,25 @@
 import axios from 'axios'
 
-// Production-ready API URL detection
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
   console.log('🚨 DEBUGGING - hostname detected:', hostname)
-  
-  // Use local backend only for localhost development
+
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     console.log('🚨 USING LOCAL BACKEND')
     return 'http://localhost:5005/api'
   }
-  
-  // ALWAYS use Railway backend for any deployed site
-  console.log('🚨 USING RAILWAY BACKEND')
-  return 'https://columbus-marketplace-backend-production.up.railway.app/api'
+
+  console.log('🚨 USING NETLIFY FUNCTIONS PROXY')
+  return '/.netlify/functions'
 }
 
 const API_URL = getApiUrl()
 
-console.log('🔍 Production API URL:', API_URL)
+console.log('🔍 API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
-console.log('🔍 BUILD TIMESTAMP: 2025-07-08-16:00:00') // Force new build
 
-// Create axios instance with hardcoded Railway URL
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -32,9 +27,8 @@ const api = axios.create({
   },
 })
 
-console.log('🔍 Axios baseURL (hardcoded):', api.defaults.baseURL)
+console.log('🔍 Axios baseURL:', api.defaults.baseURL)
 
-// Add request interceptor to include auth token
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
@@ -48,14 +42,12 @@ api.interceptors.request.use(
   }
 )
 
-// Add response interceptor to handle errors
 api.interceptors.response.use(
   (response) => {
     return response
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
       localStorage.removeItem('token')
       window.location.href = '/login'
     }
