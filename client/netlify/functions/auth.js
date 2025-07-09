@@ -24,8 +24,6 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // Extract the auth path from the Netlify function path
-        // Example: /.netlify/functions/auth/register -> /register
         const pathSegments = event.path.split('/');
         const authPath = pathSegments.slice(pathSegments.indexOf('auth') + 1).join('/');
         

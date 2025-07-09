@@ -3,26 +3,20 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs') 
 const { promisify } = require('util') 
 
-//Database connections are held in .env
-// Database connections - prefer individual variables for Railway
+//Database connection - use Railway's DATABASE_URL directly
 let userDB;
 
-// For Railway, use individual environment variables (more reliable)
-// Check for Railway environment variables first (Railway doesn't always set NODE_ENV=production)
-if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 'production') {
-    console.log("🔍 AuthController: Railway environment detected - using Railway MySQL variables")
-    userDB = mysql.createConnection({
-        host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DATABASE_HOST,
-        user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DATABASE_USER,
-        password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DATABASE_PASSWORD,
-        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DATABASE,
-        port: process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306
-    })
-} else if (process.env.DATABASE_URL) {
-    console.log("🔍 AuthController: Using DATABASE_URL for local development")
+console.log("🔍 AuthController: Initializing database connection...")
+console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
+console.log("🔍 DATABASE_URL available:", !!process.env.DATABASE_URL)
+
+// Use Railway's DATABASE_URL directly (points to 'railway' database)
+if (process.env.DATABASE_URL) {
+    console.log("🔍 AuthController: Using Railway DATABASE_URL")
     userDB = mysql.createConnection(process.env.DATABASE_URL)
+    console.log("✅ AuthController: Database connection object created")
 } else {
-    // Fallback to individual environment variables for local development
+    // Fallback for local development
     console.log("🔍 AuthController: Using individual environment variables for local development")
     userDB = mysql.createConnection({
         host: process.env.DATABASE_HOST || 'localhost',
@@ -30,38 +24,7 @@ if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 
         password: process.env.DATABASE_PASSWORD || '',
         database: process.env.DATABASE || 'Columbus_Marketplace'
     })
-}
-
-// Test database connection (non-blocking)
-if (userDB) {
-    userDB.connect((error) => {
-        if (error) {
-            console.log("❌ AuthController: Database connection failed:", error.message)
-            console.log("⚠️ AuthController: Will attempt to reconnect on each request")
-        } else {
-            console.log("✅ AuthController: Database connected successfully!")
-        }
-    })
-} else {
-    console.log("⚠️ AuthController: No database connection configured")
-}
-
-// Helper function to check database connection
-const checkDatabaseConnection = () => {
-    return new Promise((resolve, reject) => {
-        if (!userDB) {
-            reject(new Error('No database connection available'))
-            return
-        }
-        
-        userDB.ping((error) => {
-            if (error) {
-                reject(error)
-            } else {
-                resolve(true)
-            }
-        })
-    })
+    console.log("✅ AuthController: Local database connection object created")
 }
 
 exports.login = async (req, res) => {

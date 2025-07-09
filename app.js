@@ -17,25 +17,20 @@ console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
 dotenv.config({ path: './.env' })
 
 //Database connections are held in .env
-// Database connections - prefer individual variables for Railway
+// Use Railway's DATABASE_URL directly (most reliable)
 let userDB;
 
-// For Railway, use individual environment variables (more reliable)
-// Check for Railway environment variables first (Railway doesn't always set NODE_ENV=production)
-if (process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.NODE_ENV === 'production') {
-    console.log("🔍 Railway environment detected - using Railway MySQL variables")
-    userDB = mysql.createConnection({
-        host: process.env.MYSQLHOST || process.env.MYSQL_HOST || process.env.DATABASE_HOST,
-        user: process.env.MYSQLUSER || process.env.MYSQL_USER || process.env.DATABASE_USER,
-        password: process.env.MYSQLPASSWORD || process.env.MYSQL_PASSWORD || process.env.DATABASE_PASSWORD,
-        database: process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE || process.env.DATABASE,
-        port: process.env.MYSQLPORT || process.env.MYSQL_PORT || 3306
-    })
-} else if (process.env.DATABASE_URL) {
-    console.log("🔍 Using DATABASE_URL for local development")
+console.log("🔍 Main App: Initializing database connection...")
+console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
+console.log("🔍 MYSQLDATABASE:", process.env.MYSQLDATABASE)
+console.log("🔍 MYSQLHOST:", process.env.MYSQLHOST)
+
+// Use Railway's DATABASE_URL for production
+if (process.env.DATABASE_URL) {
+    console.log("🔍 Using Railway DATABASE_URL")
     userDB = mysql.createConnection(process.env.DATABASE_URL)
 } else {
-    // Fallback to individual environment variables for local development
+    // Fallback for local development
     console.log("🔍 Using individual environment variables for local development")
     userDB = mysql.createConnection({
         host: process.env.DATABASE_HOST || 'localhost',
