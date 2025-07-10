@@ -51,7 +51,26 @@ exports.login = async (req, res) => {
                 })
             }
 
-            if (!results || results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
+            console.log("🔍 Login query results:", results)
+            console.log("🔍 Results length:", results ? results.length : 'null')
+
+            if (!results || results.length === 0) {
+                console.log("❌ No user found with email:", email)
+                return res.status(401).json({
+                    success: false,
+                    message: 'Email or password is incorrect'
+                })
+            }
+
+            console.log("🔍 Found user:", results[0].email)
+            console.log("🔍 Stored password hash:", results[0].password)
+            console.log("🔍 Input password:", password)
+
+            const passwordMatch = await bcrypt.compare(password, results[0].password)
+            console.log("🔍 Password comparison result:", passwordMatch)
+
+            if (!passwordMatch) {
+                console.log("❌ Password mismatch for user:", email)
                 return res.status(401).json({
                     success: false,
                     message: 'Email or password is incorrect'
