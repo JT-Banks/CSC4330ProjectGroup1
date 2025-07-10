@@ -24,9 +24,6 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token')
       if (token) {
-        // Set default authorization header
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        
         // Verify token with backend
         const response = await authAPI.verify()
         setUser(response.data.user)
@@ -34,7 +31,6 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Auth check failed:', error)
       localStorage.removeItem('token')
-      delete axios.defaults.headers.common['Authorization']
     } finally {
       setLoading(false)
     }
@@ -48,9 +44,6 @@ export const AuthProvider = ({ children }) => {
       
       // Store token in localStorage
       localStorage.setItem('token', token)
-      
-      // Set default authorization header
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
       
       setUser(user)
       
@@ -89,7 +82,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['Authorization']
     setUser(null)
   }
 
