@@ -3,28 +3,15 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs') 
 const { promisify } = require('util') 
 
-//Database connection - use Railway's DATABASE_URL directly
-let userDB;
+//Database connection - will be set by app.js
+let userDB = null;
 
-console.log("🔍 AuthController: Initializing database connection...")
-console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
-console.log("🔍 DATABASE_URL available:", !!process.env.DATABASE_URL)
+console.log("🔍 AuthController: Module loaded (database connection will be set by app.js)")
 
-// Use Railway's DATABASE_URL directly (points to 'railway' database)
-if (process.env.DATABASE_URL) {
-    console.log("🔍 AuthController: Using Railway DATABASE_URL")
-    userDB = mysql.createConnection(process.env.DATABASE_URL)
-    console.log("✅ AuthController: Database connection object created")
-} else {
-    // Fallback for local development
-    console.log("🔍 AuthController: Using individual environment variables for local development")
-    userDB = mysql.createConnection({
-        host: process.env.DATABASE_HOST || 'localhost',
-        user: process.env.DATABASE_USER || 'root',
-        password: process.env.DATABASE_PASSWORD || '',
-        database: process.env.DATABASE || 'Columbus_Marketplace'
-    })
-    console.log("✅ AuthController: Local database connection object created")
+// Function to set database connection from app.js
+exports.setDatabase = (database) => {
+    userDB = database;
+    console.log("✅ AuthController: Database connection set from app.js")
 }
 
 exports.login = async (req, res) => {

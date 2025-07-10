@@ -126,6 +126,13 @@ console.log("🔍 Loading API routes...")
 try {
     app.use('/api', require('./routes/pages'))
     app.use('/api/auth', require('./routes/auth'))
+    
+    // Set database connection for auth controller
+    const authController = require('./controllers/authController');
+    if (userDB) {
+        authController.setDatabase(userDB);
+    }
+    
     console.log("✅ API routes loaded successfully")
 } catch (routeError) {
     console.log("❌ Error loading routes:", routeError)
