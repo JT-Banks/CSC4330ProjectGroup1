@@ -1,5 +1,7 @@
 const express = require('express')
 const authController = require('../controllers/authController')
+const cartController = require('../controllers/cartController')
+const setupController = require('../controllers/setupController')
 const router = express.Router()
 
 // API endpoints for data
@@ -26,36 +28,24 @@ router.get('/user/profile', authController.isLoggedIn, (req, res) => {
     })
 })
 
-router.get('/user/cart', authController.isLoggedIn, (req, res) => {
-    if (!req.user) {
-        return res.status(401).json({
-            success: false,
-            message: 'Unauthorized'
-        })
-    }
+// Setup route (for creating tables)
+router.post('/setup-tables', setupController.setupTables)
 
-    // Return cart data - to be implemented with database
-    res.json({
-        success: true,
-        cart: [],
-        user: req.user
-    })
-})
+// Cart routes
+router.get('/cart', authController.isLoggedIn, cartController.getCart)
+router.post('/cart', authController.isLoggedIn, cartController.addToCart)
+router.put('/cart', authController.isLoggedIn, cartController.updateCart)
+router.delete('/cart/:productId', authController.isLoggedIn, cartController.removeFromCart)
 
-router.get('/user/wishlist', authController.isLoggedIn, (req, res) => {
-    if (!req.user) {
-        return res.status(401).json({
-            success: false,
-            message: 'Unauthorized'
-        })
-    }
+// Checkout route - TODO: implement
+// router.post('/checkout', authController.isLoggedIn, cartController.checkout)
 
-    // Return wishlist data - to be implemented with database
-    res.json({
-        success: true,
-        wishlist: [],
-        user: req.user
-    })
-})
+// Orders route - TODO: implement  
+// router.get('/orders', authController.isLoggedIn, cartController.getOrders)
+
+// Wishlist routes
+router.get('/wishlist', authController.isLoggedIn, cartController.getWishlist)
+router.post('/wishlist', authController.isLoggedIn, cartController.addToWishlist)
+router.delete('/wishlist/:productId', authController.isLoggedIn, cartController.removeFromWishlist)
 
 module.exports = router

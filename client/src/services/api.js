@@ -3,15 +3,11 @@ import axios from 'axios'
 const getApiUrl = () => {
   const hostname = window.location.hostname
   
-  console.log('🚨 DEBUGGING - hostname detected:', hostname)
-  
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    console.log('🚨 USING LOCAL BACKEND')
     return 'http://localhost:5005/api'
   }
 
-
-  console.log('🚨 USING NETLIFY REDIRECTS TO RENDER BACKEND')
+  // Production: Use Netlify redirects to Railway backend
   return '/api'
 }
 
@@ -75,10 +71,16 @@ export const productsAPI = {
 
 // Cart API calls
 export const cartAPI = {
-  get: () => api.get('/cart'),
-  add: (productId, quantity) => api.post('/cart', { productId, quantity }),
-  update: (productId, quantity) => api.put('/cart', { productId, quantity }),
-  remove: (productId) => api.delete(`/cart/${productId}`),
+  getCart: () => api.get('/cart'),
+  addToCart: (productId, quantity) => api.post('/cart', { productId, quantity }),
+  updateCart: (productId, quantity) => api.put('/cart', { productId, quantity }),
+  removeFromCart: (productId) => api.delete(`/cart/${productId}`),
+  checkout: () => api.post('/checkout'),
+}
+
+// Orders API calls
+export const ordersAPI = {
+  getOrders: () => api.get('/orders'),
 }
 
 // Wishlist API calls

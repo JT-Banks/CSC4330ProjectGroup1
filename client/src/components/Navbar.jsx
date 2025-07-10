@@ -47,6 +47,12 @@ const Navbar = () => {
                   Cart
                 </Link>
                 <Link 
+                  to="/orders" 
+                  className="text-gray-600 hover:text-primary-600 transition-colors"
+                >
+                  Orders
+                </Link>
+                <Link 
                   to="/wishlist" 
                   className="text-gray-600 hover:text-primary-600 transition-colors"
                 >

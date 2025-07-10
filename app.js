@@ -129,8 +129,12 @@ try {
     
     // Set database connection for auth controller
     const authController = require('./controllers/authController');
+    const cartController = require('./controllers/cartController');
+    const setupController = require('./controllers/setupController');
     if (userDB) {
         authController.setDatabase(userDB);
+        cartController.setDatabase(userDB);
+        setupController.setDatabase(userDB);
     }
     
     console.log("✅ API routes loaded successfully")

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { cartAPI, wishlistAPI } from '../services/api'
 
 const Product = () => {
   const { id } = useParams()
@@ -9,6 +10,8 @@ const Product = () => {
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
+  const [notification, setNotification] = useState('')
+  const [notificationType, setNotificationType] = useState('success')
 
   // Mock product data based on your database schema - Student focused
   const mockProducts = {
@@ -75,7 +78,6 @@ const Product = () => {
   }
 
   useEffect(() => {
-    // Simulate API call
     setTimeout(() => {
       const foundProduct = mockProducts[id]
       setProduct(foundProduct)
@@ -83,14 +85,28 @@ const Product = () => {
     }, 500)
   }, [id])
 
-  const handleAddToCart = () => {
-    // TODO: Implement add to cart functionality
-    alert(`Added ${quantity} ${product.name}(s) to cart!`)
+  const showNotification = (message, type = 'success') => {
+    setNotification(message)
+    setNotificationType(type)
+    setTimeout(() => setNotification(''), 3000)
   }
 
-  const handleAddToWishlist = () => {
-    // TODO: Implement add to wishlist functionality
-    alert(`Added ${product.name} to wishlist!`)
+  const handleAddToCart = async () => {
+    try {
+      await cartAPI.addToCart(product.product_id, quantity)
+      showNotification(`Added ${quantity} ${product.name}(s) to cart!`)
+    } catch (error) {
+      showNotification('Failed to add to cart', 'error')
+    }
+  }
+
+  const handleAddToWishlist = async () => {
+    try {
+      await wishlistAPI.add(product.product_id)
+      showNotification(`Added ${product.name} to wishlist!`)
+    } catch (error) {
+      showNotification('Failed to add to wishlist', 'error')
+    }
   }
 
   if (loading) {
@@ -117,6 +133,15 @@ const Product = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
+      {notification && (
+        <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
+          notificationType === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 
+          'bg-red-100 text-red-800 border border-red-200'
+        }`}>
+          {notification}
+        </div>
+      )}
+      
       <button 
         onClick={() => navigate('/')}
         className="mb-6 text-primary-600 hover:text-primary-700 flex items-center"

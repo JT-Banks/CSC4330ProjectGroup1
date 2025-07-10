@@ -25,3 +25,16 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Test scripts and utilities (contain sensitive data)
+test-*.js
+rename-*.js
+*-test.js
+check-*.js
+cleanup-*.js
+setup-*.js
+*-setup.js
+update-*.js
+*-update.js
+recreate-*.js
+*-recreate.js

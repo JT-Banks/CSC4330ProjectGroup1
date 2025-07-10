@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend API Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Frontend API Test</h1>
+    
+    <div>
+        <h2>Registration Test</h2>
+        <input type="text" id="regName" placeholder="Name" value="Test User">
+        <input type="email" id="regEmail" placeholder="Email" value="testuser@lsu.edu">
+        <input type="password" id="regPassword" placeholder="Password" value="testpassword">
+        <button onclick="testRegister()">Register</button>
+        <div id="regResult"></div>
+    </div>
+
+    <div>
+        <h2>Login Test</h2>
+        <input type="email" id="loginEmail" placeholder="Email" value="testuser@lsu.edu">
+        <input type="password" id="loginPassword" placeholder="Password" value="testpassword">
+        <button onclick="testLogin()">Login</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5005/api';
+        
+        console.log('🔍 Testing from browser context');
+        console.log('🔍 API URL:', API_URL);
+        console.log('🔍 Current hostname:', window.location.hostname);
+        
+        async function testRegister() {
+            const resultDiv = document.getElementById('regResult');
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            
+            console.log('🔍 Registration attempt:', { name, email, password: '*****' });
+            
+            try {
+                const response = await axios.post(`${API_URL}/auth/register`, {
+                    name, email, password
+                });
+                
+                console.log('✅ Registration success:', response.data);
+                resultDiv.innerHTML = `<span style="color: green;">✅ ${response.data.message}</span>`;
+            } catch (error) {
+                console.error('❌ Registration error:', error);
+                const message = error.response?.data?.message || error.message;
+                resultDiv.innerHTML = `<span style="color: red;">❌ ${message}</span>`;
+            }
+        }
+        
+        async function testLogin() {
+            const resultDiv = document.getElementById('loginResult');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            console.log('🔍 Login attempt:', { email, password: '*****' });
+            
+            try {
+                const response = await axios.post(`${API_URL}/auth/login`, {
+                    email, password
+                });
+                
+                console.log('✅ Login success:', response.data);
+                resultDiv.innerHTML = `<span style="color: green;">✅ Login successful! Token: ${response.data.token?.substring(0, 20)}...</span>`;
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                const message = error.response?.data?.message || error.message;
+                resultDiv.innerHTML = `<span style="color: red;">❌ ${message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

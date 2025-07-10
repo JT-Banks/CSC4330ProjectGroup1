@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
+import Orders from './pages/Orders'
 import Wishlist from './pages/Wishlist'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -43,6 +44,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Cart />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/orders" 
+                element={
+                  <ProtectedRoute>
+                    <Orders />
                   </ProtectedRoute>
                 } 
               />
