@@ -11,7 +11,7 @@ const getApiUrl = () => {
   }
 
 
-  console.log('🚨 USING NETLIFY REDIRECTS TO RAILWAY')
+  console.log('🚨 USING NETLIFY REDIRECTS TO RENDER BACKEND')
   return '/api'
 }
 
