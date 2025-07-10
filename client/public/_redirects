@@ -1,5 +1,5 @@
-# Proxy API requests to Railway backend to avoid CORS
-/api/* https://columbus-marketplace-backend-production.up.railway.app/api/:splat 200!
+# Proxy API requests to Render backend to avoid CORS
+/api/* https://columbus-marketplace.onrender.com/api/:splat 200!
 
 # Fallback for SPA routing
 /* /index.html 200
