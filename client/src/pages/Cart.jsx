@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { cartAPI } from '../services/api'
 
 const Cart = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [cartItems, setCartItems] = useState([])
   const [loading, setLoading] = useState(true)
-  const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -60,19 +61,19 @@ const Cart = () => {
   }
 
   const handleCheckout = async () => {
-    if (cartItems.length === 0) return
+    const safeCartItems = Array.isArray(cartItems) ? cartItems : []
+    if (safeCartItems.length === 0) return
     
-    setCheckoutLoading(true)
-    try {
-      const response = await cartAPI.checkout()
-      alert(`Checkout successful! Order ID: ${response.orderId}`)
-      setCartItems([]) // Clear cart display
-    } catch (error) {
-      console.error('Checkout error:', error)
-      alert('Checkout failed. Please try again.')
-    } finally {
-      setCheckoutLoading(false)
-    }
+    // Calculate total as a number, not string
+    const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+    
+    // Navigate to checkout with cart data
+    navigate('/checkout', {
+      state: {
+        cartItems: safeCartItems,
+        total: totalAmount // Pass as number
+      }
+    })
   }
 
   const calculateTotal = () => {
@@ -178,10 +179,10 @@ const Cart = () => {
               </div>
               <button 
                 onClick={handleCheckout}
-                disabled={checkoutLoading || cartItems.length === 0}
+                disabled={cartItems.length === 0}
                 className="w-full btn-primary mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {checkoutLoading ? 'Processing...' : 'Proceed to Checkout'}
+                Proceed to Checkout
               </button>
             </div>
           </div>

@@ -8,6 +8,9 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+import PickupScheduler from './pages/PickupScheduler'
+import OrderConfirmation from './pages/OrderConfirmation'
 import Orders from './pages/Orders'
 import Wishlist from './pages/Wishlist'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -44,6 +47,30 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Cart />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/checkout" 
+                element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/pickup-scheduler" 
+                element={
+                  <ProtectedRoute>
+                    <PickupScheduler />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/order-confirmation" 
+                element={
+                  <ProtectedRoute>
+                    <OrderConfirmation />
                   </ProtectedRoute>
                 } 
               />
