@@ -90,6 +90,9 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(cookieParser())
 
+// Serve static files (for uploaded images)
+app.use('/uploads', express.static('public/uploads'))
+
 // Health check endpoint (before routes)
 app.get('/health', (req, res) => {
     res.status(200).json({
@@ -126,15 +129,20 @@ console.log("🔍 Loading API routes...")
 try {
     app.use('/api', require('./routes/pages'))
     app.use('/api/auth', require('./routes/auth'))
+    app.use('/api/products', require('./routes/products'))
     
-    // Set database connection for auth controller
+    // Set database connection for controllers
     const authController = require('./controllers/authController');
     const cartController = require('./controllers/cartController');
     const setupController = require('./controllers/setupController');
+    const categoriesController = require('./controllers/categoriesController');
+    const productsController = require('./controllers/productsController');
     if (userDB) {
         authController.setDatabase(userDB);
         cartController.setDatabase(userDB);
         setupController.setDatabase(userDB);
+        categoriesController.setDatabase(userDB);
+        productsController.setDatabase(userDB);
     }
     
     console.log("✅ API routes loaded successfully")

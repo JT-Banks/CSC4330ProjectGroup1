@@ -2,6 +2,7 @@ const express = require('express')
 const authController = require('../controllers/authController')
 const cartController = require('../controllers/cartController')
 const setupController = require('../controllers/setupController')
+const categoriesController = require('../controllers/categoriesController')
 const router = express.Router()
 
 // API endpoints for data
@@ -50,5 +51,11 @@ router.get('/orders', authController.isLoggedIn, cartController.getOrders)
 router.get('/wishlist', authController.isLoggedIn, cartController.getWishlist)
 router.post('/wishlist', authController.isLoggedIn, cartController.addToWishlist)
 router.delete('/wishlist/:productId', authController.isLoggedIn, cartController.removeFromWishlist)
+
+// Category and Tag routes
+router.get('/categories', categoriesController.getCategories)
+router.get('/tags', categoriesController.getTags)
+router.get('/categories/:categoryId/products', categoriesController.getProductsByCategory)
+router.post('/products/:productId/tags', authController.isLoggedIn, categoriesController.addProductTags)
 
 module.exports = router

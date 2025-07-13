@@ -431,3 +431,66 @@ exports.updateProfile = async (req, res) => {
         })
     }
 }
+
+exports.verifyToken = async (req, res, next) => {
+    console.log('🔍 Verifying authentication token...')
+    console.log('Cookies:', req.cookies)
+    console.log('Headers:', req.headers.authorization)
+
+    try {
+        let token = null
+
+        // Check for token in Authorization header first
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+            token = req.headers.authorization.split(' ')[1]
+        }
+        // Fall back to cookie
+        else if (req.cookies.jwt) {
+            token = req.cookies.jwt
+        }
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'Authentication required. Please log in.'
+            })
+        }
+
+        // Verify token
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+        // Check if user still exists
+        userDB.query('SELECT user_id, name, email FROM Users WHERE user_id = ?', [decoded.id], (error, result) => {
+            if (error) {
+                console.log('Database error:', error)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error during authentication'
+                })
+            }
+
+            if (!result || result.length === 0) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'User no longer exists'
+                })
+            }
+
+            req.user = {
+                userId: result[0].user_id,
+                id: result[0].user_id,
+                name: result[0].name,
+                email: result[0].email
+            }
+            
+            console.log('✅ Authentication successful for user:', req.user.name)
+            return next()
+        })
+    } catch (error) {
+        console.log('Auth middleware error:', error)
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid authentication token'
+        })
+    }
+}

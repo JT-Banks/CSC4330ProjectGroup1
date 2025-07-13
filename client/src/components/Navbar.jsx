@@ -33,6 +33,23 @@ const Navbar = () => {
             >
               Home
             </Link>
+            <Link 
+              to="/categories" 
+              className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            >
+              Categories
+            </Link>
+            
+            {user ? (
+              <>
+                <Link 
+                  to="/sell" 
+                  className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                >
+                  Sell/Trade
+                </Link>
+              </>
+            ) : null}
             
             {user ? (
               <>

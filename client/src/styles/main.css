@@ -1,0 +1,18 @@
+/* Main Styles Entry Point */
+
+/* Import CSS Variables and Theme */
+@import './theme.css';
+
+/* Import Base Styles */
+@import './base.css';
+
+/* Import Component Styles */
+@import './components/Navbar.css';
+
+/* Import Page Styles */
+@import './pages/SellItem.css';
+
+/* Tailwind Base (for any remaining Tailwind utilities) */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';

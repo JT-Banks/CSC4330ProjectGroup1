@@ -14,6 +14,8 @@ import PickupScheduler from './pages/PickupScheduler'
 import OrderConfirmation from './pages/OrderConfirmation'
 import Orders from './pages/Orders'
 import Wishlist from './pages/Wishlist'
+import Categories from './pages/Categories'
+import SellItem from './pages/SellItem'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -28,6 +30,15 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route 
+                path="/sell" 
+                element={
+                  <ProtectedRoute>
+                    <SellItem />
+                  </ProtectedRoute>
+                } 
+              />
               <Route 
                 path="/profile" 
                 element={

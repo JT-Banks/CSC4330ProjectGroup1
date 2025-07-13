@@ -70,9 +70,43 @@ export const profileAPI = {
 
 // Products API calls
 export const productsAPI = {
-  getAll: () => api.get('/products'),
+  getAll: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString()
+    return api.get(`/products${queryString ? `?${queryString}` : ''}`)
+  },
   getById: (id) => api.get(`/products/${id}`),
   search: (query) => api.get(`/products/search?q=${query}`),
+  create: (productData) => {
+    // Create FormData for file uploads
+    const formData = new FormData()
+    
+    // Add basic product fields
+    Object.keys(productData).forEach(key => {
+      if (key === 'images') {
+        // Handle image files
+        productData.images.forEach((image, index) => {
+          formData.append(`images`, image)
+        })
+      } else if (key === 'tags') {
+        // Handle tags array
+        formData.append('tags', JSON.stringify(productData.tags))
+      } else {
+        formData.append(key, productData[key])
+      }
+    })
+    
+    return api.post('/products', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  },
+  update: (id, productData) => api.put(`/products/${id}`, productData),
+  delete: (id) => api.delete(`/products/${id}`),
+  getUserProducts: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString()
+    return api.get(`/products/user/my-products${queryString ? `?${queryString}` : ''}`)
+  },
 }
 
 // Cart API calls
@@ -94,6 +128,17 @@ export const wishlistAPI = {
   get: () => api.get('/wishlist'),
   add: (productId) => api.post('/wishlist', { productId }),
   remove: (productId) => api.delete(`/wishlist/${productId}`),
+}
+
+// Categories API calls
+export const categoriesAPI = {
+  getCategories: () => api.get('/categories'),
+  getTags: (categoryId = null) => api.get(`/tags${categoryId ? `?category_id=${categoryId}` : ''}`),
+  getProductsByCategory: (categoryId, tagIds = []) => {
+    const tagQuery = tagIds.length > 0 ? `?tags=${tagIds.join(',')}` : ''
+    return api.get(`/categories/${categoryId}/products${tagQuery}`)
+  },
+  addProductTags: (productId, tagIds) => api.post(`/products/${productId}/tags`, { productId, tagIds }),
 }
 
 export default api

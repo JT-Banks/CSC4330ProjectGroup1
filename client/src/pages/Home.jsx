@@ -37,7 +37,7 @@ const Home = () => {
             { 
               name: 'Electronics', 
               description: 'Gaming, study & tech gear',
-              icon: '�',
+              icon: '💻',
               gradient: 'from-blue-400 to-blue-600',
               textColor: 'text-blue-800'
             },
