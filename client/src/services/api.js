@@ -62,6 +62,12 @@ export const authAPI = {
   verify: () => api.get('/auth/verify'),
 }
 
+// Profile API calls
+export const profileAPI = {
+  getProfile: () => api.get('/user/profile'),
+  updateProfile: (profileData) => api.put('/user/profile', profileData),
+}
+
 // Products API calls
 export const productsAPI = {
   getAll: () => api.get('/products'),

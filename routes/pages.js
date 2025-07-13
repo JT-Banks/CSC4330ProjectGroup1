@@ -28,6 +28,9 @@ router.get('/user/profile', authController.isLoggedIn, (req, res) => {
     })
 })
 
+// Update user profile
+router.put('/user/profile', authController.isLoggedIn, authController.updateProfile)
+
 // Setup route (for creating tables)
 router.post('/setup-tables', setupController.setupTables)
 
@@ -40,8 +43,8 @@ router.delete('/cart/:productId', authController.isLoggedIn, cartController.remo
 // Checkout route - TODO: implement
 // router.post('/checkout', authController.isLoggedIn, cartController.checkout)
 
-// Orders route - TODO: implement  
-// router.get('/orders', authController.isLoggedIn, cartController.getOrders)
+// Orders route
+router.get('/orders', authController.isLoggedIn, cartController.getOrders)
 
 // Wishlist routes
 router.get('/wishlist', authController.isLoggedIn, cartController.getWishlist)

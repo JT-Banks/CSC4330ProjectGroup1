@@ -343,3 +343,91 @@ exports.verify = async (req, res) => {
         })
     }
 }
+
+// Update user profile
+exports.updateProfile = async (req, res) => {
+    try {
+        const { name, email } = req.body
+        const userId = req.user.id
+
+        if (!userDB) {
+            console.log("❌ No database connection available for profile update")
+            return res.status(503).json({
+                success: false,
+                message: 'Database service unavailable. Please try again later.'
+            })
+        }
+
+        // Validate input
+        if (!name || !email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Name and email are required'
+            })
+        }
+
+        // Validate .edu email
+        if (!email.endsWith('.edu')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Only .edu email addresses are allowed'
+            })
+        }
+
+        // Check if email is already in use by another user
+        userDB.query('SELECT user_id FROM Users WHERE email = ? AND user_id != ?', [email, userId], (error, results) => {
+            if (error) {
+                console.log("❌ Profile update email check error:", error)
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database error occurred'
+                })
+            }
+
+            if (results.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Email address is already in use'
+                })
+            }
+
+            // Update user profile
+            userDB.query('UPDATE Users SET name = ?, email = ? WHERE user_id = ?', [name, email, userId], (updateError, updateResults) => {
+                if (updateError) {
+                    console.log("❌ Profile update error:", updateError)
+                    return res.status(500).json({
+                        success: false,
+                        message: 'Failed to update profile'
+                    })
+                }
+
+                if (updateResults.affectedRows === 0) {
+                    return res.status(404).json({
+                        success: false,
+                        message: 'User not found'
+                    })
+                }
+
+                console.log("✅ Profile updated successfully for user:", userId)
+                
+                // Return updated user data
+                res.status(200).json({
+                    success: true,
+                    message: 'Profile updated successfully',
+                    user: {
+                        id: userId,
+                        name: name,
+                        email: email
+                    }
+                })
+            })
+        })
+
+    } catch (error) {
+        console.log("❌ Profile update error:", error)
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        })
+    }
+}

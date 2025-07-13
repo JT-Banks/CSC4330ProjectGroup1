@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
-import { useTheme } from '../context/ThemeContext'
 import { useNavigate } from 'react-router-dom'
-import { ordersAPI, cartAPI, wishlistAPI, profileAPI } from '../services/api'
+import { ordersAPI, cartAPI, wishlistAPI } from '../services/api'
 
 const Profile = () => {
   const { user } = useAuth()
-  const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
   const [stats, setStats] = useState({
     orders: 0,
@@ -37,7 +35,7 @@ const Profile = () => {
       discord: ''
     },
     preferences: {
-      theme: theme,
+      theme: 'light',
       showEmail: false,
       showPhone: false
     }
@@ -47,17 +45,6 @@ const Profile = () => {
   useEffect(() => {
     fetchProfileData()
   }, [])
-
-  // Sync theme with profileCustomization when theme changes
-  useEffect(() => {
-    setProfileCustomization(prev => ({
-      ...prev,
-      preferences: {
-        ...prev.preferences,
-        theme: theme
-      }
-    }))
-  }, [theme])
 
   const fetchProfileData = async () => {
     try {
@@ -105,40 +92,10 @@ const Profile = () => {
   }
 
   const handleSaveProfile = async () => {
-    try {
-      setLoading(true)
-      
-      const response = await profileAPI.updateProfile({
-        name: editData.name,
-        email: editData.email
-      })
-      
-      if (response.data.success) {
-        // Update the user context or trigger a re-fetch
-        console.log('✅ Profile updated successfully:', response.data.user)
-        
-        // Update the auth context if possible (you may need to add an update function to AuthContext)
-        // For now, we'll just close the edit mode
-        setIsEditing(false)
-        
-        // Optionally refresh the page to get updated user data
-        window.location.reload()
-      }
-      
-    } catch (error) {
-      console.error('❌ Error updating profile:', error)
-      
-      // Show error message to user
-      let errorMessage = 'Failed to update profile'
-      if (error.response?.data?.message) {
-        errorMessage = error.response.data.message
-      }
-      
-      alert(errorMessage) // In a real app, you'd use a proper notification system
-      
-    } finally {
-      setLoading(false)
-    }
+    // TODO: Implement profile update API
+    console.log('Saving profile:', editData)
+    setIsEditing(false)
+    // For now, just close the edit mode
   }
 
   const handleProfilePhotoUpload = (event) => {
@@ -287,7 +244,7 @@ const Profile = () => {
               </div>
               
               <div className="mt-4">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Welcome back, {user?.name}!</h1>
+                <h1 className="text-3xl font-bold text-gray-800">Welcome back, {user?.name}!</h1>
                 <p className="text-gray-600">
                   {profileCustomization.bio || 'Manage your account and view your activity'}
                 </p>
@@ -312,7 +269,8 @@ const Profile = () => {
               className="btn-primary"
             >
               {isEditing ? 'Cancel' : 'Edit Profile'}
-            </button>          </div>
+            </button>
+          </div>
 
           {/* Stats Overview */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -615,9 +573,9 @@ const Profile = () => {
       {/* Customization Modal */}
       {showCustomization && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">✨ Customize Your Profile</h2>
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800">✨ Customize Your Profile</h2>
               <button
                 onClick={() => setShowCustomization(false)}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -754,13 +712,10 @@ const Profile = () => {
                     ].map((theme) => (
                       <button
                         key={theme.id}
-                        onClick={() => {
-                          setTheme(theme.id)
-                          setProfileCustomization(prev => ({
-                            ...prev,
-                            preferences: {...prev.preferences, theme: theme.id}
-                          }))
-                        }}
+                        onClick={() => setProfileCustomization(prev => ({
+                          ...prev,
+                          preferences: {...prev.preferences, theme: theme.id}
+                        }))}
                         className={`p-4 rounded-lg border-2 text-center transition-colors ${
                           profileCustomization.preferences.theme === theme.id
                             ? 'border-purple-500 bg-purple-50'
