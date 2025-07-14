@@ -52,7 +52,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="form-label">
               College Email
             </label>
             <input
@@ -62,13 +62,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Enter your .edu email"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
@@ -78,7 +78,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Enter your password"
             />
           </div>

@@ -111,7 +111,7 @@ exports.getProductsByCategory = async (req, res) => {
                    c.name as category_name, c.icon as category_icon, c.color as category_color,
                    GROUP_CONCAT(DISTINCT t.name) as tags
             FROM Products p
-            LEFT JOIN Categories c ON p.category = c.category_id
+            LEFT JOIN Categories c ON p.category_id = c.category_id
             LEFT JOIN Product_Tags pt ON p.product_id = pt.product_id
             LEFT JOIN Tags t ON pt.tag_id = t.tag_id
         `
@@ -120,7 +120,7 @@ exports.getProductsByCategory = async (req, res) => {
         let params = []
 
         if (categoryId && categoryId !== 'all') {
-            whereConditions.push('p.category = ?')
+            whereConditions.push('p.category_id = ?')
             params.push(categoryId)
         }
 

@@ -47,8 +47,8 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-2);
-  padding: var(--spacing-3) var(--spacing-6);
-  border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-6); /* Default enhanced padding */
+  border-radius: 1.5rem; /* Default nicely rounded */
   font-weight: 500;
   font-size: var(--font-size-base);
   line-height: 1.5;
@@ -58,6 +58,12 @@
   transition: all var(--transition-fast);
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-md); /* Default subtle shadow */
+}
+
+.btn:hover {
+  transform: translateY(-1px); /* Subtle lift effect */
+  box-shadow: var(--shadow-lg); /* Enhanced shadow on hover */
 }
 
 .btn:disabled {
@@ -68,48 +74,92 @@
 .btn-primary {
   background: var(--primary-600);
   color: white;
+  padding: var(--spacing-3) var(--spacing-6); /* Enhanced padding */
+  border-radius: 1.5rem; /* Nicely rounded */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-700);
-  transform: translateY(-1px);
+  transform: translateY(-1px); /* Gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* More shadow on hover */
 }
 
 .btn-secondary {
   background: var(--bg-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
+  padding: var(--spacing-3) var(--spacing-6); /* Enhanced padding */
+  border-radius: 1.5rem; /* Nicely rounded */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
 }
 
 .btn-secondary:hover:not(:disabled) {
   background: var(--bg-tertiary);
+  transform: translateY(-1px); /* Gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* More shadow on hover */
+}
+
+/* Button Variants */
+.btn-rounded {
+  border-radius: 2rem; /* Very rounded, pill-shaped */
+}
+
+/* Special Register Button - Nicely sized and polished */
+.btn-register {
+  padding: var(--spacing-3) var(--spacing-6); /* Moderate padding: 12px top/bottom, 24px left/right */
+  font-size: var(--font-size-base); /* Normal text size */
+  font-weight: 500; /* Medium weight */
+  border-radius: 1.5rem; /* Nicely rounded, not too extreme */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
+  transition: all var(--transition-fast);
+}
+
+.btn-register:hover:not(:disabled) {
+  transform: translateY(-1px); /* Just a gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* Slightly more shadow on hover */
 }
 
 .btn-success {
   background: var(--success-500);
   color: white;
+  padding: var(--spacing-3) var(--spacing-6); /* Enhanced padding */
+  border-radius: 1.5rem; /* Nicely rounded */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
 }
 
 .btn-success:hover:not(:disabled) {
   background: var(--success-600);
+  transform: translateY(-1px); /* Gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* More shadow on hover */
 }
 
 .btn-warning {
   background: var(--warning-500);
   color: white;
+  padding: var(--spacing-3) var(--spacing-6); /* Enhanced padding */
+  border-radius: 1.5rem; /* Nicely rounded */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
 }
 
 .btn-warning:hover:not(:disabled) {
   background: var(--warning-600);
+  transform: translateY(-1px); /* Gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* More shadow on hover */
 }
 
 .btn-error {
   background: var(--error-500);
   color: white;
+  padding: var(--spacing-3) var(--spacing-6); /* Enhanced padding */
+  border-radius: 1.5rem; /* Nicely rounded */
+  box-shadow: var(--shadow-md); /* Subtle shadow for depth */
 }
 
 .btn-error:hover:not(:disabled) {
   background: var(--error-600);
+  transform: translateY(-1px); /* Gentle lift on hover */
+  box-shadow: var(--shadow-lg); /* More shadow on hover */
 }
 
 .btn-lg {

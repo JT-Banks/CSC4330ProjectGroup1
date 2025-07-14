@@ -377,10 +377,10 @@ const Profile = () => {
                           type="text"
                           value={editData.name}
                           onChange={(e) => setEditData({...editData, name: e.target.value})}
-                          className="input-field"
+                          className="form-input"
                         />
                       ) : (
-                        <div className="input-field bg-gray-50">{user?.name}</div>
+                        <div className="form-input bg-gray-50">{user?.name}</div>
                       )}
                     </div>
                     <div>
@@ -390,10 +390,10 @@ const Profile = () => {
                           type="email"
                           value={editData.email}
                           onChange={(e) => setEditData({...editData, email: e.target.value})}
-                          className="input-field"
+                          className="form-input"
                         />
                       ) : (
-                        <div className="input-field bg-gray-50">{user?.email}</div>
+                        <div className="form-input bg-gray-50">{user?.email}</div>
                       )}
                     </div>
                     {isEditing && (

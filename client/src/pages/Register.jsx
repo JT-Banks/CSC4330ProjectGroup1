@@ -80,7 +80,7 @@ const Register = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="name" className="form-label">
               Full Name
             </label>
             <input
@@ -90,13 +90,13 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Enter your full name"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="form-label">
               College Email (.edu required)
             </label>
             <input
@@ -106,7 +106,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Enter your .edu email address"
               pattern=".*\.edu$"
               title="Please enter a valid .edu email address"
@@ -114,7 +114,7 @@ const Register = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
@@ -124,13 +124,13 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Enter your password"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="confirmPassword" className="form-label">
               Confirm Password
             </label>
             <input
@@ -140,7 +140,7 @@ const Register = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="input-field"
+              className="form-input"
               placeholder="Confirm your password"
             />
           </div>
