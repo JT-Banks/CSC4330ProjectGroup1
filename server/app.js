@@ -103,16 +103,21 @@ app.get('/health', (req, res) => {
     })
 })
 
-// Start the server immediately, regardless of database connection
 console.log("🔍 About to start server on port:", port)
+
+app.get('/api/test', (req, res) => {
+    console.log("🔍 TEST ROUTE HIT: /api/test")
+    res.json({ success: true, message: 'API routing is working!', timestamp: new Date().toISOString() })
+})
+
 const server = app.listen(port, () => {
     console.log("✅ Server started on port " + port)
     console.log("🚀 Server is ready to accept connections")
     console.log("🔗 Health endpoint: http://localhost:" + port + "/health")
+    console.log("🔗 Test API endpoint: http://localhost:" + port + "/api/test")
     console.log("🌍 Railway URL: https://columbus-marketplace-backend-production.up.railway.app")
 })
 
-// Graceful error handling
 server.on('error', (error) => {
     console.log("❌ Server error:", error)
 })
@@ -128,9 +133,17 @@ process.on('unhandledRejection', (error) => {
 // Define API routes AFTER server starts to avoid import issues
 console.log("🔍 Loading API routes...")
 try {
+    console.log("🔍 Mounting /api routes...")
     app.use('/api', require('./routes/pages'))
+    console.log("✅ /api routes mounted")
+    
+    console.log("🔍 Mounting /api/auth routes...")
     app.use('/api/auth', require('./routes/auth'))
+    console.log("✅ /api/auth routes mounted")
+    
+    console.log("🔍 Mounting /api/products routes...")
     app.use('/api/products', require('./routes/products'))
+    console.log("✅ /api/products routes mounted")
     
     // Set database connection for controllers
     const authController = require('./controllers/authController');
