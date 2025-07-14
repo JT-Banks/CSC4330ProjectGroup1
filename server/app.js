@@ -103,34 +103,13 @@ app.get('/health', (req, res) => {
     })
 })
 
-console.log("🔍 About to start server on port:", port)
-
+// Test endpoint to verify routing works
 app.get('/api/test', (req, res) => {
     console.log("🔍 TEST ROUTE HIT: /api/test")
     res.json({ success: true, message: 'API routing is working!', timestamp: new Date().toISOString() })
 })
 
-const server = app.listen(port, () => {
-    console.log("✅ Server started on port " + port)
-    console.log("🚀 Server is ready to accept connections")
-    console.log("🔗 Health endpoint: http://localhost:" + port + "/health")
-    console.log("🔗 Test API endpoint: http://localhost:" + port + "/api/test")
-    console.log("🌍 Railway URL: https://columbus-marketplace-backend-production.up.railway.app")
-})
-
-server.on('error', (error) => {
-    console.log("❌ Server error:", error)
-})
-
-process.on('uncaughtException', (error) => {
-    console.log("❌ Uncaught exception:", error)
-})
-
-process.on('unhandledRejection', (error) => {
-    console.log("❌ Unhandled rejection:", error)
-})
-
-// Define API routes AFTER server starts to avoid import issues
+// Define API routes BEFORE server starts
 console.log("🔍 Loading API routes...")
 try {
     console.log("🔍 Mounting /api routes...")
@@ -160,7 +139,30 @@ try {
     console.log("✅ API routes loaded successfully")
 } catch (routeError) {
     console.log("❌ Error loading routes:", routeError)
+    console.error(routeError)
 }
+
+console.log("🔍 About to start server on port:", port)
+
+const server = app.listen(port, () => {
+    console.log("✅ Server started on port " + port)
+    console.log("🚀 Server is ready to accept connections")
+    console.log("🔗 Health endpoint: http://localhost:" + port + "/health")
+    console.log("🔗 Test API endpoint: http://localhost:" + port + "/api/test")
+    console.log("🌍 Railway URL: https://columbus-marketplace-backend-production.up.railway.app")
+})
+
+server.on('error', (error) => {
+    console.log("❌ Server error:", error)
+})
+
+process.on('uncaughtException', (error) => {
+    console.log("❌ Uncaught exception:", error)
+})
+
+process.on('unhandledRejection', (error) => {
+    console.log("❌ Unhandled rejection:", error)
+})
 
 // Attempt database connection separately (non-blocking)
 if (userDB) {
