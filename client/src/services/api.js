@@ -7,8 +7,8 @@ const getApiUrl = () => {
     return 'http://localhost:5005/api'
   }
 
-  // Production: Always use direct Render backend URL
-  return 'https://columbus-marketplace.onrender.com/api'
+  // Production: Use relative URL to let Netlify redirects handle the proxying to Railway
+  return '/api'
 }
 
 const API_URL = getApiUrl()
@@ -16,7 +16,7 @@ const API_URL = getApiUrl()
 console.log('🔍 API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
-console.log('🔍 BUILD TIMESTAMP: 2025-07-14-FORCE-DEPLOY') // Force new deployment
+console.log('🔍 BUILD TIMESTAMP: 2025-07-14-NETLIFY-FIX') // Fix Netlify redirect conflict
 
 // Create axios instance
 const api = axios.create({
