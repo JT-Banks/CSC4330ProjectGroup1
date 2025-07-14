@@ -7,7 +7,7 @@ const getApiUrl = () => {
     return 'http://localhost:5005/api'
   }
 
-  // Production: Point directly to Render backend
+  // Production: Always use direct Render backend URL
   return 'https://columbus-marketplace.onrender.com/api'
 }
 
@@ -16,7 +16,6 @@ const API_URL = getApiUrl()
 console.log('🔍 API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
-console.log('🔍 BUILD TIMESTAMP: 2025-07-09-NETLIFY-REDIRECTS') // Force new build
 
 // Create axios instance
 const api = axios.create({
