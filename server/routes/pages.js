@@ -4,6 +4,16 @@ const cartController = require('../controllers/cartController')
 const categoriesController = require('../controllers/categoriesController')
 const router = express.Router()
 
+// Test endpoint for debugging
+router.get('/test', (req, res) => {
+    res.json({
+        success: true,
+        message: 'API routes are working!',
+        timestamp: new Date().toISOString(),
+        route: '/api/test'
+    })
+})
+
 // API endpoints for data
 router.get('/products', authController.isLoggedIn, (req, res) => {
     // Return products data as JSON
