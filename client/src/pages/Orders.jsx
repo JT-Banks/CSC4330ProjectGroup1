@@ -16,9 +16,27 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const response = await ordersAPI.getOrders()
-      setOrders(response.data || [])
+      console.log('Orders API response:', response)
+      console.log('Response data type:', typeof response.data)
+      console.log('Is response.data an array?', Array.isArray(response.data))
+      
+      // Handle the response format properly
+      let ordersData = []
+      if (response.data && response.data.data) {
+        // If the response has a nested data property
+        ordersData = response.data.data
+      } else if (Array.isArray(response.data)) {
+        // If response.data is directly an array
+        ordersData = response.data
+      } else {
+        console.log('Unexpected response format:', response.data)
+      }
+      
+      console.log('Final orders data:', ordersData)
+      setOrders(ordersData || [])
     } catch (error) {
       console.error('Error fetching orders:', error)
+      setOrders([])
     } finally {
       setLoading(false)
     }
@@ -98,7 +116,7 @@ const Orders = () => {
               <div className="border-t pt-4">
                 <h4 className="font-medium text-gray-800 mb-3">Items:</h4>
                 <div className="space-y-3">
-                  {order.items.map((item) => (
+                  {(order.items || []).map((item) => (
                     <div key={item.product_id} className="flex items-center space-x-4">
                       <img 
                         src={item.image_url || '/placeholder-image.jpg'} 
