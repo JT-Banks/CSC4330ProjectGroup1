@@ -11,10 +11,6 @@ A modern, secure marketplace designed exclusively for students with .edu email a
 - 📊 **User Dashboard** - Track your activity
 - 🔒 **JWT Security** - Secure session management
 
-## 🚀 **Live Demo**
-- **Frontend:** [Coming Soon - Netlify URL]
-- **Backend API:** [Coming Soon - Railway URL]
-
 ## 💻 **Local Development**
 
 ### Prerequisites
@@ -157,22 +153,8 @@ CSC4330ProjectGroup1/
 - **VS Code** - Development environment
 - **Concurrently** - Run multiple dev servers simultaneously
 
-## 🤝 **Contributing**
-
-We welcome contributions! Please see our [Contributing Guide](./docs/CONTRIBUTING.md) for details on:
-- Development setup
-- Code style guidelines  
-- Pull request process
-- Project structure
-
 ## 📚 **Documentation**
 
 - **[Deployment Guide](./docs/DEPLOYMENT.md)** - Detailed deployment instructions
 - **[Contributing Guide](./docs/CONTRIBUTING.md)** - How to contribute to the project
 - **[Changelog](./docs/CHANGELOG.md)** - Version history and updates
-
-## 📞 **Support**
-
-- 📧 **Email**: [your-email@example.com]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/columbus-marketplace/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/columbus-marketplace/discussions)
