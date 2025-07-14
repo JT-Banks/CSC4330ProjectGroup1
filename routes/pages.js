@@ -1,7 +1,7 @@
 const express = require('express')
-const authController = require('../controllers/authController')
-const cartController = require('../controllers/cartController')
-const categoriesController = require('../controllers/categoriesController')
+const authController = require('../server/controllers/authController')
+const cartController = require('../server/controllers/cartController')
+const categoriesController = require('../server/controllers/categoriesController')
 const router = express.Router()
 
 // API endpoints for data
