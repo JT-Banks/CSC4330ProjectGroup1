@@ -16,6 +16,7 @@ const API_URL = getApiUrl()
 console.log('🔍 API URL:', API_URL)
 console.log('🔍 Current hostname:', window.location.hostname)
 console.log('🔍 Current location:', window.location.href)
+console.log('🔍 BUILD TIMESTAMP: 2025-07-14-FORCE-DEPLOY') // Force new deployment
 
 // Create axios instance
 const api = axios.create({
