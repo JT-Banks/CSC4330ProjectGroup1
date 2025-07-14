@@ -12,6 +12,7 @@ console.log("🔍 CORS Fix Applied - Build:", new Date().toISOString())
 console.log("🔍 NODE_ENV:", process.env.NODE_ENV)
 console.log("🔍 PORT:", port)
 console.log("🔍 DATABASE_URL exists:", !!process.env.DATABASE_URL)
+console.log('🔍 BUILD TIMESTAMP: 2025-07-14-RENDER-FIX') // Fix Render backend deployment
 
 dotenv.config({ path: './.env' })
 process.on('uncaughtException', err => {

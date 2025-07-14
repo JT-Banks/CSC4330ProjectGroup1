@@ -12,6 +12,7 @@
   to = "https://columbus-marketplace.onrender.com/api/:splat"
   status = 200
   force = true
+  headers = {X-From = "Netlify"}
 
 # SPA fallback - all other routes go to index.html
 [[redirects]]
