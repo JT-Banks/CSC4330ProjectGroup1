@@ -6,17 +6,17 @@ INSERT INTO Users (name, email, password) VALUES
 ('Mike Johnson', 'mike.johnson@columbus.edu', '$2a$08$test.hashed.password.here');
 
 -- Insert sample products matching your images
-INSERT INTO Products (name, description, store_quantity, category, price, rating, image_url) VALUES 
-('Gaming Headphones', 'High-quality gaming headphones with surround sound and noise cancellation. Perfect for long gaming sessions and online meetings.', 15, 1, 89.99, 4, '/headphones.jpg'),
-('Outdoor Backpack', 'Durable and spacious backpack perfect for hiking, camping, and outdoor adventures. Multiple compartments and water-resistant material.', 8, 2, 79.95, 5, '/backpack.jpg'),
-('Fresh Bananas', 'Organic bananas, perfect for smoothies, baking, or a healthy snack. Rich in potassium and natural energy.', 50, 3, 2.99, 4, '/banana.jpg'),
-('Adventure Canoe', 'Lightweight canoe perfect for lake and river adventures. Seats 2-3 people comfortably with excellent stability.', 3, 4, 899.99, 5, '/Canoe.jpg'),
-('Xbox Wireless Controller', 'Latest Xbox wireless controller with enhanced grip and precision. Compatible with Xbox Series X|S and PC gaming.', 12, 1, 59.99, 5, '/xboxController.jpg'),
-('LSU Merchandise', 'Official LSU branded merchandise for true Tigers fans. Show your school spirit with this premium quality item.', 25, 5, 24.99, 4, '/lsu_image.1.jpg');
+INSERT INTO Products (seller_id, name, description, quantity, category_id, price, image_url) VALUES 
+(1, 'Gaming Headphones', 'High-quality gaming headphones with surround sound and noise cancellation. Perfect for long gaming sessions and online meetings.', 15, 1, 89.99, '/headphones.jpg'),
+(2, 'Outdoor Backpack', 'Durable and spacious backpack perfect for hiking, camping, and outdoor adventures. Multiple compartments and water-resistant material.', 8, 2, 79.95, '/backpack.jpg'),
+(1, 'Fresh Bananas', 'Organic bananas, perfect for smoothies, baking, or a healthy snack. Rich in potassium and natural energy.', 50, 6, 2.99, '/banana.jpg'),
+(3, 'Adventure Canoe', 'Lightweight canoe perfect for lake and river adventures. Seats 2-3 people comfortably with excellent stability.', 3, 5, 899.99, '/Canoe.jpg'),
+(2, 'Xbox Wireless Controller', 'Latest Xbox wireless controller with enhanced grip and precision. Compatible with Xbox Series X|S and PC gaming.', 12, 1, 59.99, '/xboxController.jpg'),
+(1, 'LSU Merchandise', 'Official LSU branded merchandise for true Tigers fans. Show your school spirit with this premium quality item.', 25, 2, 24.99, '/lsu_image.1.jpg');
 
 -- Insert sample categories (if you want to add a categories table later)
--- Note: For now, category is just an INT in Products table
--- 1 = Electronics, 2 = Outdoor Gear, 3 = Food & Grocery, 4 = Sports & Recreation, 5 = School Merchandise
+-- Note: category_id references Categories table
+-- 1 = Electronics, 2 = Textbooks, 3 = Clothing, 4 = Furniture, 5 = Sports & Recreation, 6 = Food & Grocery, 7 = School Supplies, 8 = Transportation
 
 -- Insert sample addresses
 INSERT INTO Address (user_id, address, city, country, phone) VALUES 
