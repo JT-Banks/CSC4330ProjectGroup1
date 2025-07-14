@@ -28,11 +28,8 @@ A modern, secure marketplace designed exclusively for students with .edu email a
 git clone https://github.com/YOUR_USERNAME/columbus-marketplace.git
 cd columbus-marketplace
 
-# Install backend dependencies
-npm install
-
-# Install frontend dependencies
-cd client && npm install && cd ..
+# Install all dependencies (backend + frontend)
+npm run install:all
 
 # Set up environment variables
 cp .env.example .env
@@ -41,9 +38,26 @@ cp .env.example .env
 # Set up database
 npm run setup-db
 
-# Start development servers
-npm run dev
+# Development options:
+# Option 1: Run both frontend and backend together
+npm run dev:both
+
+# Option 2: Run separately (in different terminals)
+npm run dev:server    # Backend only
+npm run dev:client    # Frontend only
+
+# Production build
+npm run build
 ```
+
+### **Available Scripts**
+- `npm run dev:both` - Run frontend and backend concurrently
+- `npm run dev:server` - Run backend only (port 5005)
+- `npm run dev:client` - Run frontend only (port 3000)
+- `npm run install:all` - Install dependencies for both frontend and backend
+- `npm run setup-db` - Initialize database with schema and sample data
+- `npm run build` - Build frontend for production
+- `npm start` - Start production server
 
 ### Environment Variables
 ```env
@@ -55,30 +69,110 @@ JWT_SECRET=your_secret_key
 ```
 
 ## 🌐 **Deployment**
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions using:
+See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for detailed deployment instructions using:
 - **Frontend:** Netlify (Free)
 - **Backend:** Railway (Free)
 - **Database:** Railway MySQL (Free)
 
 ## 📁 **Project Structure**
-2. In a terminal, in the parent directory of the application: ``npm install``
-3. Utilize the script located in the ``Database`` folder, simply copy and paste or load the script and run it to load the database.
-4. Once installation is finished: ``npm start``
-5. In select browser: ``localhost:5005``
-6. .env file configuration: Database info, such as password, host, jwt cookie configs(this is meant to be private, up to you really) \
-Here's an example: \
-![image](https://user-images.githubusercontent.com/48796307/161466329-9d5b3825-1f78-4984-8305-f2c84b0f90b5.png)
 
+```
+CSC4330ProjectGroup1/
+├── 📱 client/              # Frontend Application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/         # Page components  
+│   │   ├── context/       # React context providers
+│   │   └── services/      # API service calls
+│   ├── public/           # Static assets
+│   ├── package.json      # Frontend dependencies
+│   └── vite.config.js    # Vite configuration
+│
+├── 🔧 server/              # Backend Application
+│   ├── app.js            # Main Express server
+│   ├── controllers/      # Business logic handlers
+│   ├── routes/           # API route definitions
+│   ├── database/         # Database schemas & setup
+│   └── public/           # Static file serving
+│
+├── 🚀 config/              # Deployment Configuration
+│   ├── netlify.toml      # Frontend deployment config
+│   ├── railway.toml      # Backend deployment config
+│   └── railway-db-setup.sh # Database setup script
+│
+├── 📚 docs/                # Documentation
+│   ├── DEPLOYMENT.md     # Deployment instructions
+│   ├── CONTRIBUTING.md   # Contribution guidelines
+│   └── CHANGELOG.md      # Version history
+│
+└── 📋 Root Level           # Project Essentials
+    ├── .env              # Environment variables
+    ├── .gitignore        # Git ignore rules
+    ├── package.json      # Backend dependencies
+    ├── package-lock.json # Dependency lock file
+    └── README.md         # Project documentation
+```
 
-Database setup: 
-1. Once Xampp or Mamp is installed, navigate to ``http://localhost/phpmyadmin/index.php``
-2. Click new -> Create database, name it ``columbus_marketplace``
-3. Create database, then load the provided script in Database folder
+### **Architecture Overview**
+- **`client/`** - Complete React frontend with Vite build system
+- **`server/`** - Complete Node.js/Express backend with API logic
+- **`config/`** - All deployment and environment configurations
+- **`docs/`** - Project documentation and guides
+- **Root Level** - Essential project files (package.json, .env, etc.)
 
-Tech stack:
-- Xampp (MySQL, and Apache)
-- Handle-bars
-- React
-- Express
-- Cookie Parser
-- dotenv
+## 🛠️ **Tech Stack**
+
+### **Frontend**
+- **React** - Modern UI library
+- **Vite** - Fast build tool and dev server
+- **React Router** - Client-side routing
+- **Axios** - HTTP client for API calls
+- **Tailwind CSS + Custom CSS** - Styling system
+- **CSS Variables** - Theming and design tokens
+
+### **Backend**
+- **Node.js** - JavaScript runtime
+- **Express.js** - Web application framework
+- **MySQL2** - Database driver
+- **JWT (jsonwebtoken)** - Authentication tokens
+- **bcryptjs** - Password hashing
+- **Multer** - File upload handling
+- **CORS** - Cross-origin resource sharing
+- **dotenv** - Environment variable management
+
+### **Database**
+- **MySQL** - Relational database
+- **Railway MySQL** - Cloud database hosting (production)
+- **Local MySQL** - Local development
+
+### **Deployment & Hosting**
+- **Netlify** - Frontend hosting with automatic deployments
+- **Railway** - Backend hosting with database
+- **Git** - Version control
+- **GitHub** - Repository hosting
+
+### **Development Tools**
+- **Vite** - Frontend build tool
+- **npm** - Package manager
+- **VS Code** - Development environment
+- **Concurrently** - Run multiple dev servers simultaneously
+
+## 🤝 **Contributing**
+
+We welcome contributions! Please see our [Contributing Guide](./docs/CONTRIBUTING.md) for details on:
+- Development setup
+- Code style guidelines  
+- Pull request process
+- Project structure
+
+## 📚 **Documentation**
+
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Detailed deployment instructions
+- **[Contributing Guide](./docs/CONTRIBUTING.md)** - How to contribute to the project
+- **[Changelog](./docs/CHANGELOG.md)** - Version history and updates
+
+## 📞 **Support**
+
+- 📧 **Email**: [your-email@example.com]
+- 🐛 **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/columbus-marketplace/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/columbus-marketplace/discussions)

@@ -2,12 +2,18 @@
   "name": "columbus-marketplace",
   "version": "1.0.0",
   "description": "Columbus Student Marketplace - Backend API",
-  "main": "app.js",
+  "main": "server/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "setup-db": "node setup-database.js"
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "nodemon server/app.js",
+    "dev:both": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "setup-db": "node server/database/setup-database.js",
+    "build": "cd client && npm run build",
+    "install:all": "npm install && cd client && npm install",
+    "clean": "rm -rf node_modules client/node_modules client/dist"
   },
   "keywords": [],
   "author": "",

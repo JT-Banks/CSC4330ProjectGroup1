@@ -14,19 +14,20 @@ CREATE TABLE IF NOT EXISTS Categories (
     category_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT,
+    icon VARCHAR(10) DEFAULT '📦',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insert categories for student marketplace
-INSERT IGNORE INTO Categories (category_id, name, description) VALUES
-(1, 'Electronics', 'Gaming, laptops, phones, tech gear'),
-(2, 'Textbooks', 'Course books, study materials'),
-(3, 'Clothing', 'Fashion, accessories, dorm clothes'), 
-(4, 'Furniture', 'Dorm/apartment furniture, decor'),
-(5, 'Sports & Recreation', 'Equipment, gear, tickets'),
-(6, 'Food & Grocery', 'Snacks, meal plans, kitchen items'),
-(7, 'School Supplies', 'Notebooks, pens, calculators'),
-(8, 'Transportation', 'Bikes, skateboards, parking passes');
+INSERT IGNORE INTO Categories (category_id, name, description, icon) VALUES
+(1, 'Electronics', 'Gaming, laptops, phones, tech gear', '💻'),
+(2, 'Textbooks', 'Course books, study materials', '📚'),
+(3, 'Clothing', 'Fashion, accessories, dorm clothes', '👕'), 
+(4, 'Furniture', 'Dorm/apartment furniture, decor', '🪑'),
+(5, 'Sports & Recreation', 'Equipment, gear, tickets', '⚽'),
+(6, 'Food & Grocery', 'Snacks, meal plans, kitchen items', '🍕'),
+(7, 'School Supplies', 'Notebooks, pens, calculators', '✏️'),
+(8, 'Transportation', 'Bikes, skateboards, parking passes', '🚲');
 
 -- Products table: Items that STUDENTS are selling
 CREATE TABLE IF NOT EXISTS Products (
