@@ -7,8 +7,8 @@ const getApiUrl = () => {
     return 'http://localhost:5005/api'
   }
 
-  // Production: Use Netlify redirects to Railway backend
-  return '/api'
+  // Production: Point directly to Render backend
+  return 'https://columbus-marketplace.onrender.com/api'
 }
 
 const API_URL = getApiUrl()

@@ -1,0 +1,20 @@
+# Netlify deployment configuration
+[build]
+  command = "cd client && npm install && npm run build"
+  publish = "client/dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect API calls to your Render backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://columbus-marketplace.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback - all other routes go to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
