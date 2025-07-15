@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { categoriesAPI } from '../services/api'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const Categories = () => {
   const [categories, setCategories] = useState([])
@@ -11,11 +11,26 @@ const Categories = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
     fetchCategories()
     fetchProducts()
   }, [])
+
+  // Handle URL category parameter after categories are loaded
+  useEffect(() => {
+    const categoryParam = searchParams.get('category')
+    if (categoryParam && categories.length > 0) {
+      // Find the category by name (case-insensitive)
+      const matchingCategory = categories.find(cat => 
+        cat.name.toLowerCase() === categoryParam.toLowerCase()
+      )
+      if (matchingCategory) {
+        setSelectedCategory(matchingCategory.category_id)
+      }
+    }
+  }, [categories, searchParams])
 
   useEffect(() => {
     if (selectedCategory !== 'all') {

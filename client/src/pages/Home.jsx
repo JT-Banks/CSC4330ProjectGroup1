@@ -49,27 +49,31 @@ const Home = () => {
               textColor: 'text-purple-800'
             },
             { 
-              name: 'Home & Garden', 
-              description: 'Dorm & living essentials',
-              icon: '🏠',
+              name: 'Textbooks', 
+              description: 'Study materials & books',
+              icon: '📚',
               gradient: 'from-green-400 to-green-600',
               textColor: 'text-green-800'
             },
             { 
-              name: 'Sports', 
+              name: 'Sports & Recreation', 
               description: 'Campus recreation & fitness',
               icon: '🏀',
               gradient: 'from-orange-400 to-orange-600',
               textColor: 'text-orange-800'
             }
           ].map((category) => (
-            <div key={category.name} className="card hover:shadow-lg transition-all duration-300 cursor-pointer group">
+            <Link 
+              key={category.name} 
+              to={`/categories?category=${category.name.toLowerCase()}`}
+              className="card hover:shadow-lg transition-all duration-300 cursor-pointer group block"
+            >
               <div className={`h-32 bg-gradient-to-br ${category.gradient} rounded-lg mb-4 flex items-center justify-center group-hover:scale-105 transition-transform`}>
                 <span className="text-6xl">{category.icon}</span>
               </div>
               <h3 className={`text-lg font-semibold ${category.textColor} mb-1`}>{category.name}</h3>
               <p className="text-gray-600 text-sm">{category.description}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
